@@ -136,3 +136,11 @@ dist
 
 # dist
 dist/
+
+
+# sqlite
+.db*
+
+
+# env vars
+.env
