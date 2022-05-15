@@ -2,7 +2,7 @@ import sequelize from '../sequelizeClient'
 import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional} from 'sequelize'
 
 
-interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
+export interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
   id?: number
   username: string;
   password: string;

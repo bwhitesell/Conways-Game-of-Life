@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { Model } from 'sequelize/types';
 import { User } from '../entities/user'
 
 const MIN_USERNAME_LENGTH = 6;
@@ -15,7 +16,7 @@ async function validateUsername(username: string): Promise<statusMessage> {
   // does username meet length requirement?
   if (username.length < MIN_USERNAME_LENGTH) {
     return {
-      error: false,
+      error: true,
       message: `Username must be of length ${MIN_USERNAME_LENGTH}`
     }
   }
@@ -24,13 +25,13 @@ async function validateUsername(username: string): Promise<statusMessage> {
   const usersWithMatchingNames = await User.findAll({"where": {"username": username}})
   if (usersWithMatchingNames.length > 0) {
     return {
-      error: false,
+      error: true,
       message: "That username is already taken."
     }
   }
 
   return {
-    error: true,
+    error: false,
     message: "Username is valid."
   }
 }
@@ -39,19 +40,20 @@ function validatePassword(password: string): statusMessage {
   // does password meet length requirement?
   if (password.length < MIN_USERNAME_LENGTH) {
     return {
-      error: false,
+      error: true,
       message: `Password must be of length ${MIN_PASSWORD_LENGTH}`
     }
   }
   
   return {
-    error: true,
+    error: false,
     message: "Password is valid."
   }
 }
 
 
-function sendJsonResponse (obj: statusMessage, res: Response) {
+
+function sendJsonResponse<M> (obj: statusMessage | M, res: Response) {
   res.set('Content-Type', 'application/json');
   res.send(JSON.stringify(obj))
 }

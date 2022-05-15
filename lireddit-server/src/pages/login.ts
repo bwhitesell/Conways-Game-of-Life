@@ -13,8 +13,8 @@ export default async (req: RequestWithSession, res: Response) => {
   // validate body structure
   if (reqBodyFields.includes("username") && reqBodyFields.includes("password") && reqBodyFields.length === 2) {
 
-    const reqUsername = reqBody["username"]
-    const reqPassword = reqBody["password"]
+    const reqUsername = reqBody.username
+    const reqPassword = reqBody.password
 
     // validate username
     const reqUser = await User.findOne({where: {username: reqUsername}})
@@ -22,7 +22,9 @@ export default async (req: RequestWithSession, res: Response) => {
     if (reqUser) {
       // validate password
       if (await argon2.verify(reqUser.password, reqPassword)) {
-        req.session.uid = reqUser.id
+
+        // login successful. Associate userid with session.
+        req.session.userId = reqUser.id
         return sendJsonResponse({error: false, message: "User logged in successfully"}, res)
       }
     }

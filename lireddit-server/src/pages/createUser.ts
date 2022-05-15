@@ -5,7 +5,7 @@ import { sendJsonResponse, validateUsername, validatePassword, statusMessage } f
 
 export default async (req: Request, res: Response) => {
 
-  const reqBody = req.body 
+  const reqBody = req.body
   const reqBodyFields = Object.keys(reqBody)
 
   // validate body structure
@@ -20,6 +20,7 @@ export default async (req: Request, res: Response) => {
   // validate username
   const usernameValidityMessage: statusMessage = await validateUsername(reqUsername)
   if (usernameValidityMessage.error) {
+        res.status(400)
     return sendJsonResponse(usernameValidityMessage, res)
   }
 
@@ -27,7 +28,7 @@ export default async (req: Request, res: Response) => {
   const passwordValidityMessage: statusMessage = validatePassword(reqPassword)
   if (passwordValidityMessage.error) {
     res.status(400)
-    return sendJsonResponse(usernameValidityMessage, res)
+    return sendJsonResponse(passwordValidityMessage, res)
   }
 
   await User.create({username: reqUsername, password: reqPassword})

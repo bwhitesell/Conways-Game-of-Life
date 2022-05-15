@@ -1,5 +1,9 @@
 import getUser from './getUser'
 import login from './login'
+import me from './me'
+import createUser from './createUser'
+import validateUsername from './validateUsername'
+import validatePassword from './validatePassword'
 import { SESSION_CONFIG } from '../config'
 
 import express from 'express'
@@ -18,13 +22,18 @@ function constructExpressApp() {
   // session middleware
   expressApp.use(session(SESSION_CONFIG));
 
-    // route paths
+  // route paths
   expressApp.get('/user/:uid', getUser)
+  expressApp.get('/me', me)
+  expressApp.post('/createUser', createUser)
   expressApp.post('/login', login)
+  expressApp.post('/validateUsername', validateUsername)
+  expressApp.post('/validatePassword', validatePassword)
+
   console.log('Express app loaded...');
   return expressApp
 }
 
 export default constructExpressApp 
 
-export type RequestWithSession = Request & {session: Express.Session & {uid?: number | undefined}}
+export type RequestWithSession = Request & {session: Express.Session & {userId?: number | undefined}}
