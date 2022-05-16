@@ -5,8 +5,6 @@ export default async (req: Request, res: Response) => {
 
   const reqBody = req.body
   const reqBodyProps = Object.keys(reqBody)
-  console.log(reqBody)
-  console.log(reqBodyProps)
 
   if (!reqBodyProps.includes('username') || reqBodyProps.length !== 1) {
     return res.status(400).send('Invalid request body.')

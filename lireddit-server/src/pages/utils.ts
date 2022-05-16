@@ -13,6 +13,14 @@ interface statusMessage{
 
 
 async function validateUsername(username: string): Promise<statusMessage> {
+  // does username use space characters?
+  if (username.includes(' ')) {
+    return {
+      error: true,
+      message: "Username can't contain any spaces."
+    }
+  }
+
   // does username meet length requirement?
   if (username.length < MIN_USERNAME_LENGTH) {
     return {
@@ -37,6 +45,15 @@ async function validateUsername(username: string): Promise<statusMessage> {
 }
 
 function validatePassword(password: string): statusMessage {
+  // does password contain spaces?
+  if (password.includes(' ')) {
+    return {
+      error: true,
+      message: "Password can't contain any spaces."
+    }
+  }
+
+
   // does password meet length requirement?
   if (password.length < MIN_USERNAME_LENGTH) {
     return {

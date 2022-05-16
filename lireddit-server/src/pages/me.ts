@@ -7,7 +7,8 @@ import { RequestWithSession } from './index'
 export default async (req: RequestWithSession, res: Response) => {
 
   const userId = req.session.userId
-  if (userId) {
+
+  if (userId !== undefined) {
     const requestedUser = await User.findOne({where: {id: userId}})
     if (requestedUser) {
       sendJsonResponse<UserModel>(requestedUser, res)
