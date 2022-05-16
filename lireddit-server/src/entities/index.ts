@@ -10,7 +10,7 @@ const dbConnectedModels = [
 ]
 
 async function createDevData() {
-    await User.create({"id": 0, "username": 'dave', "password": await argon2.hash('password')})
+    await User.create({"id": 0, "username": 'van gogh', "password": await argon2.hash('password')})
     await User.create({"id": 1, "username": 'al', "password": await argon2.hash('password')})
 }
 

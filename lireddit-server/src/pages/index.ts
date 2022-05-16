@@ -8,6 +8,7 @@ import { SESSION_CONFIG } from '../config'
 
 import express from 'express'
 import { Request } from 'express'
+import cors from 'cors'
 import session from 'express-session'
 import Express from 'express-session'
 
@@ -18,6 +19,9 @@ function constructExpressApp() {
 
   // request body middleware
   expressApp.use(express.json())
+
+  // cors middleware
+  expressApp.use(cors({origin: 'http://localhost:3000'}))
 
   // session middleware
   expressApp.use(session(SESSION_CONFIG));

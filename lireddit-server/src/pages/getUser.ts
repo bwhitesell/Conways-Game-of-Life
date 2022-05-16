@@ -11,6 +11,7 @@ export default async (req: Request, res: Response) => {
 
   // check the results and respond appropriately
   if (requestedUser) {
+    requestedUser.password = "not today satan"
     sendJsonResponse<UserModel>(requestedUser, res)
   } else {
     return res.status(404).send(PAGE_NOT_FOUND_MSG)
