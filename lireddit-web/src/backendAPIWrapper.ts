@@ -1,5 +1,5 @@
 
-interface StatusMessage {
+export interface StatusMessage {
   error: boolean;
   message: string;
 }
@@ -26,7 +26,7 @@ class BackendAPIWrapper {
 
   registerUser(username: string, password: string): Promise<StatusMessage> {
     return this._postRequest(
-      this.baseURL + '/register',
+      this.baseURL + '/createUser',
       JSON.stringify({username: username, password: password})
     ) 
   }
