@@ -1,13 +1,16 @@
-import React from 'react'
+import { StatusMessage } from '../backendAPIWrapper';
 
-export interface ValidatedInputData {
-  value: string;
-  error: boolean;
-  message: string;
-}
-
-export interface ValidatedInputArgs {
-  inputName: string;
-  inputData: ValidatedInputData;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>
-}
+export interface ValidatedInputState {
+    value: string;
+    error: boolean;
+    message: string;
+    isPending: boolean;
+  }
+  
+  export interface ValidatedInputProps {
+    name: string;
+    state: ValidatedInputState;
+    setState: React.Dispatch<React.SetStateAction<ValidatedInputState>>
+    typingDelay: number;
+    validateInput: (input: string) => Promise<StatusMessage>;
+  }

@@ -1,24 +1,95 @@
-import { FormControl, FormErrorMessage, FormHelperText, FormLabel, Input } from '@chakra-ui/react'
-import { Props } from 'framer-motion/types/types';
-import React from 'react'
-import {ValidatedInputArgs} from './types'
+import { 
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement
+} from '@chakra-ui/react';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
+import React from 'react';
+import {ValidatedInputProps, ValidatedInputState} from './types'
 
 
-const ValidatedInput: React.FC<ValidatedInputArgs> = (props) => {
+export default class ValidatedInput extends React.Component<ValidatedInputProps> {
 
-  return (
-    <FormControl isInvalid={props.inputData.error}>
-      <FormLabel htmlFor={props.inputName}>{props.inputName}</FormLabel>
-      <Input id={props.inputName} type={props.inputName} value={props.inputData.value} onChange={props.handleChange}/>
-      {props.inputData.error ?
-        (
-          <FormErrorMessage>{props.inputData.message}</FormErrorMessage>
-        ) : (
-          <FormHelperText></FormHelperText>
-        )
-      }
-    </FormControl>
-  )
+  props: ValidatedInputProps;
+  validationCheck: NodeJS.Timeout;
+
+  constructor(props: ValidatedInputProps) {
+    super(props)
+    this.props = props;
+    this.validationCheck = setTimeout(() => {}, 0) ;
+  }
+
+  static genInitState(): ValidatedInputState {
+    return {
+      value: "",
+      error: false,
+      message: "",
+      isPending: true ,
+    };
+  }
+
+  async checkValue(value: string) {
+    const statusMessage = await this.props.validateInput(value)
+    this.props.setState({
+      value: value,
+      error: statusMessage.error,
+      message: statusMessage.message,
+      isPending: false,
+    })
+  }
+
+  onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value
+    this.props.setState({value: newValue, error: false, message: "", isPending: true})
+    clearTimeout(this.validationCheck)
+    const newValidationCheck = setTimeout(
+      () => this.checkValue(newValue), this.props.typingDelay
+    )
+    this.validationCheck = newValidationCheck
+  }
+
+  validityIcon() {
+    if (this.props.state.isPending || this.props.state.value === "") {
+      return undefined
+    }
+
+    return this.props.state.error ? (
+      <InputRightElement children={<CloseIcon color='red.500'/>}/>
+    ) : (
+      <InputRightElement children={<CheckIcon color='green.500'/>}/>
+    )
+  }
+
+  helperTextMessage() {
+    if (this.props.state.isPending && this.props.state.value !== "") {
+      return <FormHelperText>Checking...</FormHelperText>
+    } else if (this.props.state.error) {
+      return <FormErrorMessage>{this.props.state.message}</FormErrorMessage>
+    } else {
+      return
+    }
+  }
+
+  render() {
+    return (
+      <FormControl isInvalid={this.props.state.error} p={1}>
+        <FormLabel htmlFor={this.props.name}>{this.props.name}</FormLabel>
+        <InputGroup>
+          {this.validityIcon()}
+          <Input
+            id={this.props.name}
+            type={this.props.name}
+            value={this.props.state.value}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.onChange(e)}}
+          />
+        </InputGroup>
+        {this.helperTextMessage()}
+      </FormControl>
+    )
+  }
+
 }
-
-export default ValidatedInput
