@@ -42,7 +42,6 @@ class Particle extends React.Component<ParticleProps, ParticleState> {
   }
 
   updateHeading() {
-    console.log(window.innerHeight);
     this.setState({
       bearing: {
         xBearing: (Math.random() - .5),
@@ -70,7 +69,7 @@ class Particle extends React.Component<ParticleProps, ParticleState> {
 
   componentDidMount() {
     this.setState({y: (window.innerHeight + this.yDelay)})
-    const updateMovement = setInterval(() => this.updatePosition(), 25)
+    const updateMovement = setInterval(() => this.updatePosition(), 40)
     this.stopMovementUpdates = () => {clearInterval(updateMovement);}
   }
 

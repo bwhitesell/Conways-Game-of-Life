@@ -52,7 +52,7 @@ const Register: React.FC = () => {
 
   return (
     <Box display="block" maxW="sm" margin="auto">
-      <Heading color="#546960" margin="auto" textAlign="center" size="md" p={3}>Sign Up</Heading>
+      <Heading margin="auto" textAlign="center" size="md" p={3}>Sign Up</Heading>
       <form style={{minWidth: "300px"}}>
         <ValidatedInput name="Username"
           state={usernameState}
