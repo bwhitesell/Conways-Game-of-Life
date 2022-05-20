@@ -64,8 +64,8 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
     return (
       <Box display="flex" position="absolute" bottom={0}>
         <Box p={3} marginLeft="auto">
-          <Button colorScheme="teal" margin={1} onClick={() => this.play()}>Mute</Button>
-          <Button colorScheme="teal" margin={1} onClick={() => this.pause()}>Unmute</Button>
+          <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.play()}>Unmute</Button>
+          <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.pause()}>Mute</Button>
         </Box>
       </Box>
     )

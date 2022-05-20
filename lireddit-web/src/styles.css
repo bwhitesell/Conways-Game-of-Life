@@ -6,42 +6,23 @@
 
 #spritesheet {
   image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   margin: auto;
-  background-image: url("/growth-inverted.png");
+  background-image: url("/growth.png");
   background-size: 100%;
   width: calc( var(--grid-cell) * 34);
-  height: calc( var(--grid-cell) * 34);
-  animation: walkAnimation 3s steps(34) 1;
+  height: calc( var(--grid-cell));
+  animation: growAnimation 3.5s steps(33) 1 forwards;
+  animation-delay: 3s;
 }
 
 #hero {
   margin: auto;
   width: calc( var(--grid-cell));
   height: calc( var(--grid-cell));
-  overflow:hidden;
+  overflow: hidden;
 }
 
-@keyframes walkAnimation {
+@keyframes growAnimation {
   from { background-position: 0px 0px; }
-  to { background-position: calc(var(--grid-cell) * 34) calc(0px); }
-}
-
-#test {
-  position: absolute;
-  background-color: yellow;
-  width: 25px;
-  height: 25px;
-  animation: move 5s;
-}
-
-@keyframes move
-{
-    from {
-        bottom: -25%;
-    }
-    to {
-        bottom: 125%;
-    }
+  to { background-position: calc(var(--grid-cell) * -33) calc(0px); }
 }
