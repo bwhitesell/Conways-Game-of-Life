@@ -70,7 +70,7 @@ class Board extends React.Component<BoardProps, BoardState> {
  
   getNeighbors(x: number, y: number) {
     const neighbors = []
-    for (let i = -1; i <= 1; i ++){
+    for (let i = -1; i <= 1; i ++) {
       for (let j = -1; j <= 1; j ++) {
         if (i !== 0 || j !== 0) {
           if (this.coordinatesInBounds(x + i, y + j)) {
@@ -99,10 +99,9 @@ class Board extends React.Component<BoardProps, BoardState> {
   startGame() {
     setInterval(
       () => this.updateGridSkeleton(),
-      500,
+      1000,
     )
   }
-
 
   updateGridSkeleton() {
     // update skeleton
@@ -129,10 +128,15 @@ class Board extends React.Component<BoardProps, BoardState> {
 
   render() {
     return (
-      <Box display="block" justifyContent="center" alignContent="vertical">
-        {this.state.grid}
-        <Button onClick={() => this.startGame()}>update grid</Button>
+      <Box display="flex" justifyContent="center">
+        <Box margin="auto" marginTop="70px" display="flex" justifyContent="center">
+          <Box boxShadow="0 0 90px 100px #f7fffe" backgroundColor="#f7fffe" borderRadius="15px" margin="50px" display="block" alignContent="vertical" overflow="hidden" position="absolute">
+            {this.state.grid}
+          </Box>
+        </Box>
+        <Button margin="auto" onClick={() => this.startGame()}>Start</Button>
       </Box>
+
     )
   }
 }

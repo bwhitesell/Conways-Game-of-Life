@@ -19,6 +19,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   onClick: () => void;
 
   cellSize: number
+  backgroundImage: string;
   animation: () => void
 
   constructor(props: GridCellProps) {
@@ -27,6 +28,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     this.animate = props.animate;
     this.onClick = props.onClick;
 
+    this.backgroundImage = (Math.random() > .5) ? '/flower-growth.png': 'growth2.png'
     this.animation = this.alive ? this.animateBirth : this.animateDeath
     this.cellSize = 48;
 
@@ -60,7 +62,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
           this.setState({backgroundPositionX: this.cellSizeInPixels(i)});
           resolve('');
         },
-        8,
+        15 + 10*Math.random(),
       ));
     }
   }
@@ -72,25 +74,24 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
           this.setState({backgroundPositionX: this.cellSizeInPixels(i)});
           resolve('');
         },
-        8,
+        15 + 10*Math.random(),
       ));
     }
   }
 
-
   render() {
     return (
-      <Box w={this.cellSizeInPixels()} h={this.cellSizeInPixels()} overflow="hidden">
+      <Box w={this.cellSizeInPixels()} h={this.cellSizeInPixels()} overflow="hidden" borderRadius={15} position="relative" opacity="100%">
         <Button
           width={this.cellSizeInPixels(37)}
           height={this.cellSizeInPixels()}
           backgroundPosition={this.state.backgroundPositionX}
+          overflow="hidden"
           backgroundSize="100%"
-          backgroundImage='/growth2.png'
-          backgroundColor={this.alive? "#f2fff4":"white"}
+          backgroundImage={this.backgroundImage}
+          backgroundColor={this.alive? "#f7fffe":"#f7fffe"}
           flex={1}
           p={0}
-          borderRadius={2}
           onClick={(e: React.MouseEvent) => this.onClick()}
         />
       </Box>
