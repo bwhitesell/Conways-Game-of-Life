@@ -87,7 +87,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
           backgroundPosition={this.state.backgroundPositionX}
           backgroundSize="100%"
           backgroundImage='/growth2.png'
-          backgroundColor={this.alive? "white":"white"}
+          backgroundColor={this.alive? "#f2fff4":"white"}
           flex={1}
           p={0}
           borderRadius={2}
