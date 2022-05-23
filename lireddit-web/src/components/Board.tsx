@@ -40,7 +40,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     )
   }
 
-  renderGrid(returnGrid: boolean = false): JSX.Element[] | void {
+    renderGrid(returnGrid: boolean = false): JSX.Element[] | void {
     // init new grid obj
     const grid = [];
 
@@ -50,9 +50,9 @@ class Board extends React.Component<BoardProps, BoardState> {
       for (let colNum = 0; colNum < this.nHorizontalCells; colNum ++) {
         const cellIsAlive = this.cellSkeleton[rowNum][colNum]
         const cellOnClickCB = this.buildSetGridCellCB(rowNum, colNum);
-        const cellKey = String(rowNum + colNum) + String(cellIsAlive)
+        const cellKey =`${rowNum}_${colNum}_${cellIsAlive})` 
         renderedGridRow.push(
-          <GridCell key={cellKey} alive={cellIsAlive} onClick={cellOnClickCB} />
+          <GridCell key={cellKey} alive={cellIsAlive} onClick={cellOnClickCB} animate={!returnGrid}/>
         )
       }
       grid.push(
@@ -96,23 +96,33 @@ class Board extends React.Component<BoardProps, BoardState> {
     }
   }
 
+  startGame() {
+    setInterval(
+      () => this.updateGridSkeleton(),
+      500,
+    )
+  }
+
+
   updateGridSkeleton() {
     // update skeleton
+    const newCellSkeleton = []
     for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
+      const newRow = []
       for (let colNum = 0; colNum < this.nHorizontalCells; colNum++) {
         const nNeighbors = this.getNeighbors(rowNum, colNum).filter(Boolean).length
         const cellIsAlive = this.cellSkeleton[rowNum][colNum];
-        if (cellIsAlive) {
-          if (nNeighbors > 3) {
-            this.cellSkeleton[rowNum][colNum] = false;
-          } else if ( nNeighbors < 2) {
-            this.cellSkeleton[rowNum][colNum] = false;
-          }
-        } else if (!cellIsAlive && nNeighbors === 3) {
-          this.cellSkeleton[rowNum][colNum] = true;
+        if (cellIsAlive && [2, 3].includes(nNeighbors)) {
+          newRow.push(true)
+        } else if ((!cellIsAlive) && nNeighbors === 3) {
+          newRow.push(true)
+        } else {
+          newRow.push(false)
         }
       }
+      newCellSkeleton.push(newRow)
     }
+    this.cellSkeleton = newCellSkeleton
     // rerender the grid
     this.renderGrid();
   }
@@ -121,7 +131,7 @@ class Board extends React.Component<BoardProps, BoardState> {
     return (
       <Box display="block" justifyContent="center" alignContent="vertical">
         {this.state.grid}
-        <Button onClick={() => this.updateGridSkeleton()}>update grid</Button>
+        <Button onClick={() => this.startGame()}>update grid</Button>
       </Box>
     )
   }

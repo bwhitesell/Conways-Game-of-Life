@@ -4,7 +4,7 @@ import Board from '../components/Board'
 
 const board: React.FC = () => {
   return (
-    <Board nHorizontalCells={25} nVerticalCells={10} />
+    <Board nHorizontalCells={40} nVerticalCells={20} />
   )
 }
 
