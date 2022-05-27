@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { sendJsonResponse, validateUsername } from './utils'
+import { sendJsonResponse, validateUsername } from '../utils'
 
 export default async (req: Request, res: Response) => {
 

@@ -7,6 +7,7 @@ import { Box, Button, Heading } from '@chakra-ui/react';
 
 interface AudioPlayerProps {
   audioURL: string;
+  children: JSX.Element;
 }
 
 interface AudioPlayerState {
@@ -15,7 +16,6 @@ interface AudioPlayerState {
 
 
 class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
-
   removeMoveMousePlayAudioListener: () => void;
 
   constructor(props: AudioPlayerProps) {
@@ -62,12 +62,16 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
 
   render() {
     return (
-      <Box display="flex" position="absolute" bottom={0}>
-        <Box p={3} marginLeft="auto">
-          <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.play()}>Unmute</Button>
-          <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.pause()}>Mute</Button>
+      <div {...this.props}>
+        {this.props.children}
+        <Box display="flex" flexDirection="column" position="absolute" bottom={0}>
+          <Heading margin="auto" size="md">Music</Heading>
+          <Box p={3} marginLeft="auto">
+            <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.pause()}>||</Button>
+            <Button backgroundColor="#546960" colorScheme="teal" margin={1} onClick={() => this.play()}>▶</Button>
+          </Box>
         </Box>
-      </Box>
+      </div>
     )
   }
 } 

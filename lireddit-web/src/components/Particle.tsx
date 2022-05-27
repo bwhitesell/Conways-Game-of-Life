@@ -69,9 +69,14 @@ class Particle extends React.Component<ParticleProps, ParticleState> {
 
   componentDidMount() {
     this.setState({y: (window.innerHeight + this.yDelay)})
-    const updateMovement = setInterval(() => this.updatePosition(), 40)
+    const updateMovement = setInterval(() => this.updatePosition(), 100)
     this.stopMovementUpdates = () => {clearInterval(updateMovement);}
   }
+
+  componentWillUnmount() {
+    this.stopMovementUpdates();
+  }
+
 
   render() {
     return (

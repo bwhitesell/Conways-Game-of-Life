@@ -12,5 +12,6 @@ export interface ValidatedInputState {
     state: ValidatedInputState;
     setState: React.Dispatch<React.SetStateAction<ValidatedInputState>>
     typingDelay: number;
+    hideValidityIcon?: boolean;
     validateInput: (input: string) => Promise<StatusMessage>;
   }

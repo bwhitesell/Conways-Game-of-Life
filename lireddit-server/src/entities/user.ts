@@ -1,11 +1,13 @@
 import sequelize from '../sequelizeClient'
-import { DataTypes, Model, InferAttributes, InferCreationAttributes, CreationOptional} from 'sequelize'
+import { SimulationModel } from './simulation'
+import { DataTypes, Model, InferAttributes, InferCreationAttributes } from 'sequelize'
 
 
 export interface UserModel extends Model<InferAttributes<UserModel>, InferCreationAttributes<UserModel>> {
   id?: number
   username: string;
   password: string;
+  getSimulations: () => SimulationModel[];
 }
 
 const User = sequelize.define<UserModel>('User', {

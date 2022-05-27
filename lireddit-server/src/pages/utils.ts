@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Model } from 'sequelize/types';
-import { User } from '../entities/user'
+import { Session } from './index'
+import { User, UserModel } from '../entities/user'
 
 const MIN_USERNAME_LENGTH = 6;
 const MIN_PASSWORD_LENGTH = 5;
@@ -69,10 +70,36 @@ function validatePassword(password: string): statusMessage {
 }
 
 
+async function associateSessionWithUser(session: Session): Promise<(UserModel | undefined)> {
+  /*
+    Returns a promise of a user or undefined. If undefined session is not associated with a
+    user. Can also throw an exception if an invalid user is associated with the session.
+  */
+
+  const userId = session.userId;
+
+  if (userId !== undefined) {
+    const requestedUser = await User.findOne({where: {id: userId}});
+    if (requestedUser) {
+      return requestedUser
+    } else {
+      throw "Invalid user / session state";
+    }
+  } else {
+    return undefined
+  }
+}
+
 
 function sendJsonResponse<M> (obj: statusMessage | M, res: Response) {
   res.set('Content-Type', 'application/json');
   res.send(JSON.stringify(obj))
 }
 
-export { validateUsername, validatePassword, sendJsonResponse, statusMessage }
+export { 
+  validateUsername,
+  validatePassword,
+  sendJsonResponse,
+  statusMessage,
+  associateSessionWithUser 
+}

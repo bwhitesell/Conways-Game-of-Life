@@ -3,6 +3,7 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  Hide,
   Input,
   InputGroup,
   InputRightElement
@@ -53,15 +54,21 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps>
   }
 
   validityIcon() {
-    if (this.props.state.isPending || this.props.state.value === "") {
-      return undefined
-    }
-
-    return this.props.state.error ? (
-      <InputRightElement children={<CloseIcon color='red.500'/>}/>
-    ) : (
-      <InputRightElement children={<CheckIcon color='green.500'/>}/>
+    const shouldHideValidityIcon = (
+      this.props.state.isPending ||
+      this.props.state.value === "" ||
+      this.props.hideValidityIcon
     )
+
+    if (shouldHideValidityIcon) {
+      return undefined
+    } else {
+      return this.props.state.error ? (
+        <InputRightElement children={<CloseIcon color='red.500'/>}/>
+      ) : (
+        <InputRightElement children={<CheckIcon color='green.500'/>}/>
+      )
+    }
   }
 
   helperTextMessage() {

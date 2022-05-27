@@ -1,15 +1,17 @@
 import { Box } from '@chakra-ui/react'
 import React from 'react'
 import Board from '../components/Board'
-import Particle from '../components/Particle'
+import { redirectLoggedOutUser } from '../utils'
+import { BACKEND_URL } from '../config'
+import BackendAPIWrapper from '../backendAPIWrapper'
 
 
 const board: React.FC = () => {
+  redirectLoggedOutUser("/");
+
   return (
     <Box display="flex" justifyContent="center">
-      <Board nHorizontalCells={20} nVerticalCells={15} />
-      <Particle initialX={50} yDelay={50}/>
-      <Particle initialX={945} yDelay={120}/>
+      <Board nHorizontalCells={30} nVerticalCells={17} />
     </Box>
   )
 }

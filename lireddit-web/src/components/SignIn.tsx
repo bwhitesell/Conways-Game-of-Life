@@ -6,7 +6,7 @@ import { Box, Button, Heading } from '@chakra-ui/react';
 import Router from 'next/router';
 
 
-const Register: React.FC = () => {
+const SignIn: React.FC = () => {
  
   const [usernameState, setUsernameState] = React.useState(ValidatedInput.genInitState());
   const [passwordState, setPasswordState] = React.useState(ValidatedInput.genInitState());
@@ -20,23 +20,26 @@ const Register: React.FC = () => {
   );
   
   const validateUsername = async (username: string) => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    return await backendAPIWrapper.checkUsernameValidity(username)
+    const error = username === "";
+    const message = error ? "Username can't be blank." : "Username is valid.";
+    return {error: error, message: message}
   }
 
   const validatePassword = async (password: string) => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    return await backendAPIWrapper.checkPasswordValidity(password)
+    const error = password === "";
+    const message = error ? "Password can't be blank." : "Password is valid.";
+    return {error: error, message: message}
+
   }
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
-    setIsLoading(true)
-    attemptUserRegistration()
+    setIsLoading(true);
+    attemptSignIn();
 
-    async function attemptUserRegistration() {
+    async function attemptSignIn() {
       const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-      const registrationStatus = await backendAPIWrapper.registerUser(
+      const registrationStatus = await backendAPIWrapper.loginUser(
         usernameState.value,
         passwordState.value,
       );
@@ -58,6 +61,7 @@ const Register: React.FC = () => {
           setState={setUsernameState}
           typingDelay={1000}
           validateInput={validateUsername}
+          hideValidityIcon={true}
         />
         <ValidatedInput
           name="Password"
@@ -65,6 +69,7 @@ const Register: React.FC = () => {
           setState={setPasswordState}
           typingDelay={1000}
           validateInput={validatePassword}
+          hideValidityIcon={true}
         />
         <Box display="flex" justifyContent="left" p={2}>
           <Button 
@@ -73,11 +78,11 @@ const Register: React.FC = () => {
             color="teal"
             isDisabled={disableSubmit}
             onClick={onSubmit}
-          >Sign Up</Button>
+          >Login</Button>
         </Box>
       </form>
     </Box>
   )
 }
 
-export default Register
+export default SignIn 
