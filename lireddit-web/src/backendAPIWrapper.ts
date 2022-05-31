@@ -4,28 +4,28 @@ export interface StatusMessage {
   message: string;
 }
 
-interface UserDetails {
-  username: string
-  password: string
-  createdAt: string,
-  udatedAt: string,
+export interface UserDetails {
+  username: string;
+  password: string;
+  createdAt: string;
+  udatedAt: string;
 }
 
-interface SimulationData {
+export interface SimulationData {
   id: number;
   name: string;
   description: string;
-  data: string;
+  data: boolean[][];
 }
 
 class BackendAPIWrapper {
-  public baseURL: string
+  public baseURL: string;
 
   constructor(baseURL: string) {
     this.baseURL = baseURL
   }
 
-  me(): Promise<UserDetails> {
+  me(): Promise<UserDetails | StatusMessage> {
     return this._getRequest(this.baseURL + "/me")
   }
 
@@ -33,15 +33,30 @@ class BackendAPIWrapper {
     this._getRequest(this.baseURL + "/logout")
   }
 
-  listSimulations(): Promise<SimulationData[]> {
+  listSimulations(): Promise<SimulationData[] | StatusMessage > {
     return this._getRequest(this.baseURL + "/listSimulations")
   }
 
-  getSimulation(simulationId: number): Promise<SimulationData> {
+  getSimulation(simulationId: number): Promise<SimulationData | StatusMessage> {
     return this._getRequest(this.baseURL + `/getSimulation/${simulationId}`)
   }
 
-  deleteSimulation(simulationId: number): <StatusMessage>
+  createSimulation(
+    name: string,
+    description: string,
+    data: boolean[][]
+  ): Promise<StatusMessage> {
+
+    const simulationData = {name: name, description: description, data: data}
+    return this._postRequest(
+      this.baseURL + '/createSimulation', 
+      JSON.stringify(simulationData)
+    )
+  }
+
+  deleteSimulation(simulationId: number) {
+    return this._deleteRequest(this.baseURL + `/deleteSimulation/${simulationId}`)
+  }
 
   registerUser(username: string, password: string): Promise<StatusMessage> {
     return this._postRequest(
@@ -94,6 +109,17 @@ class BackendAPIWrapper {
       }
     )
     return rawResponse.json()
+  }
+
+  private async _deleteRequest(url: string): Promise<any> {
+    const rawResponse = await fetch(
+      url,
+      {
+        method: "DELETE",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+      }
+    )
   }
 
 

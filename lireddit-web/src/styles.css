@@ -26,3 +26,12 @@
   from { background-position: 0px 0px; }
   to { background-position: calc(var(--grid-cell) * -33) calc(0px); }
 }
+
+.simCard {
+  transition: margin 0.2s ease-in-out;
+}
+
+.simCard:hover {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}

@@ -64,6 +64,7 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
     return (
       <div {...this.props}>
         {this.props.children}
+        <Box p={14}></Box>
         <Box display="flex" flexDirection="column" position="absolute" bottom={0}>
           <Heading margin="auto" size="md">Music</Heading>
           <Box p={3} marginLeft="auto">

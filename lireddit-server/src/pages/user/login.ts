@@ -1,7 +1,7 @@
-import { User } from '../entities/user'
+import { User } from '../../entities/user'
 import { Request, Response } from 'express'
-import { sendJsonResponse } from './utils'
-import { RequestWithSession } from './index'
+import { sendJsonResponse } from '../utils'
+import { RequestWithSession } from '../index'
 import * as argon2 from 'argon2'
 
 

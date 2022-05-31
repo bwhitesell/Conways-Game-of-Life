@@ -7,7 +7,7 @@ export interface UserModel extends Model<InferAttributes<UserModel>, InferCreati
   id?: number
   username: string;
   password: string;
-  getSimulations: () => SimulationModel[];
+  getSimulations: () => Promise<SimulationModel[] | {}>;
 }
 
 const User = sequelize.define<UserModel>('User', {

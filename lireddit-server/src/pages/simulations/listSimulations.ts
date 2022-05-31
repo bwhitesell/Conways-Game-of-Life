@@ -10,12 +10,17 @@ const listSimulations = async (req: RequestWithSession, res: Response) => {
   const sessionUser = await associateSessionWithUser(req.session);
   let responseData;
   if (sessionUser) {
-    const simulations = sessionUser.getSimulations();
+    const rawSimData = await sessionUser.getSimulations();
+    const simulations = (Object.keys(rawSimData).length === 0) ? (
+      []
+    ) : (
+      rawSimData
+    )
     responseData = simulations;
   } else {
     responseData = {error: true, message: 'not signed in.'}
   }
-  sendJsonResponse<SimulationModel[]>(responseData, res);
+  sendJsonResponse<SimulationModel[] | {}>(responseData, res);
 }
 
 export default listSimulations 

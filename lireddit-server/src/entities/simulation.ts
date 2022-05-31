@@ -9,6 +9,8 @@ export interface SimulationModel extends Model<InferAttributes<SimulationModel>,
   description: string;
   data: string;
   setUser: (user: UserModel) => void;
+  getUser: () => void;
+
   hasUser: (user: UserModel) => boolean;
 }
   

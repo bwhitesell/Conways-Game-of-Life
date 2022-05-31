@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { RequestWithSession } from './index'
+import { RequestWithSession } from '../index'
 
 
 const logout = (req: RequestWithSession, res: Response) => {

@@ -45,7 +45,7 @@ const Register: React.FC = () => {
         setIsLoading(false)
         alert(registrationStatus.message)
       } else {
-        Router.push('/board')
+        Router.push('/home')
       }
     }
   }
