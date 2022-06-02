@@ -26,17 +26,22 @@ const Navbar: React.FC = () => {
   }
 
   return (
-    <Box id="navbar " borderRadius={2} backgroundColor="teal" display="flex"  p={3}>
-      <Box id="userIcon" display="flex" borderWidth={2} borderColor="black">
-        <img style={{width: "50px", height: "50px"}} src="/userIcon.jpeg"></img>
+    <Box>
+      <Box id="navbar" borderRadius={2} backgroundColor="teal" display="flex"  p={3} position="fixed" top={0} width="100%" zIndex="10">
+        <Box id="userIcon" display="flex" borderWidth={2} borderColor="black">
+          <img style={{width: "50px", height: "50px"}} src="/userIcon.jpeg"></img>
+        </Box>
+        <Box id="username" display="flex" p={3}>
+          <Heading color="white" size="sm">{username}</Heading>
+        </Box>
+        <Box display="flex" marginLeft="auto">
+          <Button onClick={signOut} colorScheme="teal" marginTop={1}>Sign Out</Button>
+        </Box>
+      </Box>  
+      <Box id="navbar-spacer" width="100%" top={0} height="80px">
+
       </Box>
-      <Box id="username" display="flex" p={3}>
-        <Heading color="white" size="sm">{username}</Heading>
-      </Box>
-      <Box display="flex" marginLeft="auto">
-        <Button onClick={signOut} colorScheme="teal" marginTop={1}>Sign Out</Button>
-      </Box>
-    </Box>  
+    </Box>
   )
 }
 

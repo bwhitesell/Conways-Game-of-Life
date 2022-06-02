@@ -1,7 +1,55 @@
 :root {
   --pixel-size: 0.5vw;
   --grid-cell: calc( var(--pixel-size) * 34);
+  --board-pixel-size: 1px;
+  --board-grid-cell: calc( var(--board-pixel-size) * 37);
   --bg: #9fa7e4;
+}
+
+#aliveTreeCell {
+  image-rendering: pixelated;
+  margin: auto;
+  background-image: url("/growth2.png");
+  background-position: calc(var(--board-grid-cell) * 36) calc(0px);
+  background-size: 100%;
+  width: calc( var(--board-grid-cell) * 37);
+  height: calc( var(--board-grid-cell));
+  animation: boardGrowAnimation .4s steps(35) 1 forwards;
+  overflow: hidden;
+}
+
+#deadTreeCell {
+  image-rendering: pixelated;
+  margin: auto;
+  background-image: url("/growth2.png");
+  background-size: 100%;
+  width: calc( var(--board-grid-cell) * 37);
+  height: calc( var(--board-grid-cell));
+  animation: boardDieAnimation .4s steps(35) 1 forwards;
+  overflow: hidden;
+}
+
+#aliveFlowerCell {
+  image-rendering: pixelated;
+  margin: auto;
+  background-image: url("/flower-growth.png");
+  background-position: calc(var(--board-grid-cell) * 36) calc(0px);
+  background-size: 100%;
+  width: calc( var(--board-grid-cell) * 37);
+  height: calc( var(--board-grid-cell));
+  animation: boardGrowAnimation .4s steps(35) 1 forwards;
+  overflow: hidden;
+}
+
+#deadFlowerCell {
+  image-rendering: pixelated;
+  margin: auto;
+  background-image: url("/flower-growth.png");
+  background-size: 100%;
+  width: calc( var(--board-grid-cell) * 37);
+  height: calc( var(--board-grid-cell));
+  animation: boardDieAnimation .4s steps(35) 1 forwards;
+  overflow: hidden;
 }
 
 #spritesheet {
@@ -11,9 +59,18 @@
   background-size: 100%;
   width: calc( var(--grid-cell) * 34);
   height: calc( var(--grid-cell));
-  animation: growAnimation 3.5s steps(33) 1 forwards;
-  animation-delay: 3s;
+  animation: frontPageGrowAnimation 3.5s steps(33) 1 forwards;
+  animation-delay: 1s;
 }
+
+#cellHero {
+  margin: auto;
+  width: calc( var(--board-grid-cell));
+  height: calc( var(--board-grid-cell));
+  overflow: hidden;
+  background: none;
+}
+
 
 #hero {
   margin: auto;
@@ -22,7 +79,23 @@
   overflow: hidden;
 }
 
-@keyframes growAnimation {
+@keyframes boardGrowAnimation {
+  
+  from { 
+    background-position: calc(var(--board-grid-cell) * 1) calc(0px);
+  }
+
+  to { 
+    background-position: calc(var(--board-grid-cell) * 36) calc(0px);
+  }
+}
+
+@keyframes boardDieAnimation {
+  from { background-position: calc(var(--board-grid-cell) * 36) calc(0px); }
+  to { background-position: calc(var(--board-grid-cell) * 1) calc(0px);; }
+}
+
+@keyframes frontPageGrowAnimation{
   from { background-position: 0px 0px; }
   to { background-position: calc(var(--grid-cell) * -33) calc(0px); }
 }

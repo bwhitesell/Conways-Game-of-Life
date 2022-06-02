@@ -38,10 +38,6 @@ export default function Home() {
       </Fade>
       <Particle key="particle1" initialX={205} yDelay={243}/>
       <Particle key="particle2" initialX={824} yDelay={150}/>
-      <Particle key="particle3" initialX={1254} yDelay={375}/>
-      <Particle key="particle4" initialX={133} yDelay={482}/>
-      <Particle key="particle5" initialX={84} yDelay={512}/>
-      <Particle key="particle6" initialX={945} yDelay={582}/>
       <Particle key="particle7" initialX={945} yDelay={674}/>
     </Box>
   )

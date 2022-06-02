@@ -10,8 +10,9 @@ interface GridCellProps {
   onClick: () => void;
 }
 
+
 interface GridCellState {
-  backgroundPositionX: string;
+  opacity: number;
 }
 
 
@@ -22,7 +23,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   onClick: () => void;
 
   cellSize: number
-  backgroundImage: string;
+  isTree: boolean;
   animation: () => void
 
   constructor(props: GridCellProps) {
@@ -32,25 +33,13 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     this.onClick = props.onClick;
     this.isBorderCell = props.isBorderCell;
 
-    this.backgroundImage = (props.isTree) ? '/flower-growth.png': 'growth2.png'
+    this.isTree = props.isTree;
     this.animation = this.alive ? this.animateBirth : this.animateDeath
     this.cellSize = 32;
 
     this.state = {
-      backgroundPositionX: this.cellSizeInPixels(this.animate ? (this.alive ? 1 : 37) : (1)),
+      opacity: this.animate ? (this.alive ? 0.0 : 1.0) : 0.0
     }
-  }
-
-  cellSizeInPixels(multiple: number = 1) {
-    return String(this.cellSize * multiple) + 'px'
-  }
-
-  alivePosition() {
-    return this.cellSizeInPixels(37)
-  }
-
-  deadPosition() {
-    return this.cellSizeInPixels(1)
   }
 
   componentDidMount() {
@@ -59,61 +48,67 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     }
   }
 
-  backgroundColor() {
+  buttonId() {
     if (this.alive) {
-      if (this.isBorderCell) {
-        return '#f5d058'
+      if (this.isTree) {
+        return "aliveTreeCell"
+      } else {
+        return "aliveFlowerCell"
       }
-      return '#cfffd5'
-    }
-    else if (this.animate) {
-      if (!this.alive) {
-        return 'white'
+    } else {
+      if (this.isTree) {
+        return "deadTreeCell"
+      } else {
+        return "deadFlowerCell"
       }
     }
-    return 'white'
   }
 
+  backgroundColor() {
+    if (!this.isBorderCell) {
+      return `rgba(166, 255, 188, ${this.state.opacity})`
+    } else {
+      return `rgba(255, 239, 214, ${this.state.opacity})`
+    }
+  }
+    
   async animateBirth() {
-    for (let i = 1; i < 38; i+=4) {
+    for (let i = 1; i < 10; i+=1) {
       await new Promise(resolve => setTimeout(
         () => {
-          this.setState({backgroundPositionX: this.cellSizeInPixels(i)});
+          this.setState({opacity: this.state.opacity + i*.1});
           resolve('');
         },
-        25,
+        40,
       ));
     }
   }
 
   async animateDeath() {
-    for (let i = 37; i > 0; i-=4) {
+    for (let i = 1; i < 10; i+=1) {
       await new Promise(resolve => setTimeout(
         () => {
-          this.setState({backgroundPositionX: this.cellSizeInPixels(i)});
+          this.setState({opacity: this.state.opacity - i*.1});
           resolve('');
         },
-        25,
+        40,
       ));
     }
   }
 
   render() {
     return (
-      <Box w={this.cellSizeInPixels()} h={this.cellSizeInPixels()} overflow="hidden" borderRadius={5} position="relative" opacity="100%">
+      <Box id="cellHero" borderRadius={5}>
         <Button
-          width={this.cellSizeInPixels(37)}
-          height={this.cellSizeInPixels()}
-          backgroundPosition={this.state.backgroundPositionX}
-          sx={{"image-rendering": "pixelated"}}
+          id={this.buttonId()}
           overflow="hidden"
           backgroundSize="100%"
-          backgroundImage={this.backgroundImage}
           backgroundColor={this.backgroundColor()}
           flex={1}
           p={0}
           onClick={(e: React.MouseEvent) => this.onClick()}
-        />
+        >
+        </Button>
       </Box>
     )
   }

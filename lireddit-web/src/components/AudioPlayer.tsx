@@ -49,7 +49,7 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
   }
 
   play() {
-    this.state.audio?.play();
+    //this.state.audio?.play();
     if (!this.state.audio?.paused) {
       this.removeMoveMousePlayAudioListener();
     }

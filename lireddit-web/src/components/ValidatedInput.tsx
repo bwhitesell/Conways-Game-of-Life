@@ -83,7 +83,7 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps>
 
   render() {
     return (
-      <FormControl isInvalid={this.props.state.error} p={1}>
+      <FormControl display="flex" justifyContent="center" flexDirection="column" isInvalid={this.props.state.error} p={1}>
         <FormLabel htmlFor={this.props.name}>{this.props.name}</FormLabel>
         <InputGroup>
           {this.validityIcon()}
