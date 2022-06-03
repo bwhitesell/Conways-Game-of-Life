@@ -4,9 +4,10 @@ import React from 'react';
 
 interface GridCellProps {
   alive: boolean;
-  animate: boolean;
   isTree: boolean;
+  nNeighbors: number;
   isBorderCell: boolean;
+  isSettingCell: boolean;
   onClick: () => void;
 }
 
@@ -18,8 +19,9 @@ interface GridCellState {
 
 class GridCell extends React.Component<GridCellProps, GridCellState> {
   alive: boolean;
-  animate: boolean;
   isBorderCell: boolean;
+  isSettingCell: boolean;
+  nNeighbors: number;
   onClick: () => void;
 
   cellSize: number
@@ -29,23 +31,22 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   constructor(props: GridCellProps) {
     super(props);
     this.alive = props.alive;
-    this.animate = props.animate;
     this.onClick = props.onClick;
     this.isBorderCell = props.isBorderCell;
+    this.nNeighbors = props.nNeighbors;
+    this.isSettingCell = props.isSettingCell;
 
     this.isTree = props.isTree;
     this.animation = this.alive ? this.animateBirth : this.animateDeath
     this.cellSize = 32;
 
     this.state = {
-      opacity: this.animate ? (this.alive ? 0.0 : 1.0) : 0.0
+      opacity: this.isSettingCell ? 0.0 : (this.alive ? 0.0 : 1.0)
     }
   }
 
   componentDidMount() {
-    if (this.animate) {
-      this.animation()
-    }
+    this.animation()
   }
 
   buttonId() {
@@ -65,11 +66,39 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   }
 
   backgroundColor() {
+    if (this.isSettingCell) {
+      return `rgba(217, 255, 227, ${this.state.opacity})`
+    }
+
     if (!this.isBorderCell) {
-      return `rgba(166, 255, 188, ${this.state.opacity})`
+      if (this.nNeighbors === 0) {
+        return `rgba(255, 247, 251, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 1) {
+        return `rgba(217, 255, 227, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 2) {
+        return `rgba(219, 255, 217, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 3) {
+        return `rgba(237, 255, 217, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 4) {
+        return `rgba(249, 255, 201, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 5) {
+        return `rgba(255, 242, 201, ${this.state.opacity})`
+      }
+      if (this.nNeighbors === 6) {
+        return `rgba(255, 231, 201, ${this.state.opacity})`
+      }
+      if (this.nNeighbors >= 7) {
+        return `rgba(255, 215, 201, ${this.state.opacity})`
+      }
     } else {
       return `rgba(255, 239, 214, ${this.state.opacity})`
     }
+    return "white"
   }
     
   async animateBirth() {
@@ -85,13 +114,13 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   }
 
   async animateDeath() {
-    for (let i = 1; i < 10; i+=1) {
+    for (let i = 1; i < 100; i+=1) {
       await new Promise(resolve => setTimeout(
         () => {
-          this.setState({opacity: this.state.opacity - i*.1});
+          this.setState({opacity: this.state.opacity - i*.01});
           resolve('');
         },
-        40,
+        100,
       ));
     }
   }
