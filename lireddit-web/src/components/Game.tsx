@@ -38,7 +38,6 @@ interface GameState {
 
 class Game extends React.Component<GameProps, GameState> {
  
-  generation: number;
   name: string;
   description: string;
   conwayGrid: ConwayGrid;
@@ -47,7 +46,6 @@ class Game extends React.Component<GameProps, GameState> {
   constructor(props: GameProps) {
     super(props);
 
-    this.generation = 1;
     this.name = props.name;
     this.description = props.description;
     this.conwayGrid = new ConwayGrid(props.grid),
@@ -58,17 +56,12 @@ class Game extends React.Component<GameProps, GameState> {
     }
   }
 
-  inInitMode() {
-    return this.generation <= 1
-  }
-
   startGame() {
     this.initialGridState = this.conwayGrid.grid
     this.setState({running: true})
     setInterval(
       () => {
         if (this.state.running) {
-          this.generation += 1
           this.conwayGrid.updateGrid();
           this.setState({boardState: this.conwayGrid.grid})
         }
@@ -146,7 +139,7 @@ class Game extends React.Component<GameProps, GameState> {
         fontFamily="Apple Chancery, cursive"
         size="lg"
       >
-        Generations: {this.generation}
+        Generations: {this.conwayGrid.generation}
       </Heading>
     )
   }

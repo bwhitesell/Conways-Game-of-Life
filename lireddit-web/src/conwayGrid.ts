@@ -21,6 +21,15 @@ class ConwayGrid {
     this.nBoardCells = this.nVerticalCells * this.nHorizontalCells
   }
 
+  clearGrid() {
+    this.generation = 1;
+    for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
+      for (let colNum = 0; colNum < this.nHorizontalCells; colNum++) {
+        this.grid[rowNum][colNum] = false;
+      }
+    }
+  }
+
   updateGrid() {
     const newGrid = [];
 
@@ -79,6 +88,17 @@ class ConwayGrid {
       return true
     }
     return false
+  }
+
+  checkIfGridIsIdentical(grid: boolean[][]) {
+    for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
+      for (let colNum = 0; colNum < this.nHorizontalCells; colNum++) {
+        if (grid[rowNum][colNum] !== this.grid[rowNum][colNum]) {
+          return false
+        }
+      }
+    }
+    return true
   }
 
   getNumNeighbors(x: number, y: number) {

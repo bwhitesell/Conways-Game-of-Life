@@ -93,10 +93,11 @@ class Home extends React.Component<HomeProps, HomeState> {
     return (
       <Box>
         <Navbar />
-        <Box id="homeBody" display="flex" justifyContent="center" p={5}>
+        <Box id="homeBody" width="100%" display="flex" justifyContent="center" p={5}>
           <Box id="mySimulations" display="flex" flexDirection="column">
-            <Box id ="mySimulationsHeading" display="flex">
+            <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
               <Heading
+                display="flex"
                 margin={5}
                 color="teal"
                 size="4xl"

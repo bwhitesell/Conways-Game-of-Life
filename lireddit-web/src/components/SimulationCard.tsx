@@ -16,7 +16,7 @@ const SimulationCard: React.FC<SimulationCardProps> = (props: SimulationCardProp
 
   return (
     <a className="simCard" href={`/board/${props.simId}`}>
-      <Box margin={5} display="flex" backgroundColor="#546960" borderRadius={5} p={2} maxWidth="600px" boxShadow="7px 7px 30px 5px #888888">
+      <Box margin={5} display="flex" backgroundColor="#546960" borderRadius={5} p={2} boxShadow="7px 7px 30px 5px #888888">
         <Box display="flex" flexDirection="column">
           <Heading
             p={3}

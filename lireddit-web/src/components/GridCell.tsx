@@ -114,20 +114,20 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   }
 
   async animateDeath() {
-    for (let i = 1; i < 100; i+=1) {
+    for (let i = 1; i < 100; i+=10) {
       await new Promise(resolve => setTimeout(
         () => {
           this.setState({opacity: this.state.opacity - i*.01});
           resolve('');
         },
-        100,
+        50,
       ));
     }
   }
 
   render() {
     return (
-      <Box id="cellHero" borderRadius={5}>
+      <Box id="cellHero" borderColor="#d4d4d4" borderWidth="1px">
         <Button
           id={this.buttonId()}
           overflow="hidden"
