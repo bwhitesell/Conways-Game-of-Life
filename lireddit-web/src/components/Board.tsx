@@ -68,7 +68,7 @@ class Board extends React.Component<BoardProps> {
 
   render() {
     return (
-      <Box>
+      <Box display="block" margin="auto">
         {this.renderGrid()}
       </Box>
     )
