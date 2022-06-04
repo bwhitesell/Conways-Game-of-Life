@@ -10,10 +10,28 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 import React from 'react';
-import {ValidatedInputProps, ValidatedInputState} from './types'
+import { StatusMessage } from '../backendAPIWrapper';
 
 
-export default class ValidatedInput extends React.Component<ValidatedInputProps> {
+
+export interface ValidatedInputState {
+    value: string;
+    error: boolean;
+    message: string;
+    isPending: boolean;
+  }
+  
+  export interface ValidatedInputProps {
+    name: string;
+    state: ValidatedInputState;
+    typingDelay: number;
+    hideValidityIcon?: boolean;
+    validateInput: (input: string) => Promise<StatusMessage>;
+    isDisabled?: boolean;
+  }
+
+
+export default class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInputState> {
 
   props: ValidatedInputProps;
   validationCheck: NodeJS.Timeout;
@@ -21,7 +39,8 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps>
   constructor(props: ValidatedInputProps) {
     super(props)
     this.props = props;
-    this.validationCheck = setTimeout(() => {}, 0) ;
+    this.state = this.props.state;
+    this.validationCheck = setTimeout(() => {}, 0);
   }
 
   static genInitState(): ValidatedInputState {
@@ -29,24 +48,36 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps>
       value: "",
       error: false,
       message: "",
-      isPending: true ,
-    };
+      isPending: true,
+    }
+  }
+
+  setStateAndUpdateReference(state: ValidatedInputState) {
+    this.setState(state); // rerender this component
+
+    // update references to parent component(s) w/o a rerender.
+    this.props.state.value = state.value;
+    this.props.state.error = state.error;
+    this.props.state.message = state.message;
+    this.props.state.isPending = state.isPending;
   }
 
   async checkValue(value: string) {
     const statusMessage = await this.props.validateInput(value)
-    this.props.setState({
+    this.setStateAndUpdateReference({
       value: value,
       error: statusMessage.error,
       message: statusMessage.message,
       isPending: false,
-    })
+    });
   }
 
   onChange(e: React.ChangeEvent<HTMLInputElement>) {
     const newValue = e.target.value
-    this.props.setState({value: newValue, error: false, message: "", isPending: true})
-    clearTimeout(this.validationCheck)
+    this.setStateAndUpdateReference(
+      {value: newValue, error: false, message: "", isPending: true}
+    );
+    clearTimeout(this.validationCheck);
     const newValidationCheck = setTimeout(
       () => this.checkValue(newValue), this.props.typingDelay
     )
@@ -88,9 +119,10 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps>
         <InputGroup>
           {this.validityIcon()}
           <Input
+            isDisabled={this.props.isDisabled ? this.props.isDisabled : false}
             id={this.props.name}
             type={this.props.name}
-            value={this.props.state.value}
+            value={this.state.value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.onChange(e)}}
           />
         </InputGroup>

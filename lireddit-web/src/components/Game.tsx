@@ -3,21 +3,31 @@ import React from 'react';
 import ConwayGrid from '../conwayGrid'
 import Board from './Board'
 import CuteSubHeading from './CuteSubHeading';
+import ValidatedInput, { ValidatedInputState } from './ValidatedInput'
 import { FlexCol, FlexRow } from './Layout';
 import siteCopy from '../textContents'
 import StatCellBtn from './StatCellBtn';
 
 
-interface GameProps {
+export interface GameProps {
 
   /**
    * How wide and long to make the game board.
    */
   grid: boolean[][];
+  /**
+   * The name of the game instance
+   */
+  name: string;
+
+  /**
+   * A description of the game instance
+   */
+  description: string;
 }
 
 
-interface GameState {
+export interface GameState {
 
   /**
    * The grid data from a conway game object
@@ -32,7 +42,7 @@ interface GameState {
   /**
    * detect static board?
    */
-   detectStaticBoard: boolean;
+  detectStaticBoard: boolean;
 
   /**
    * Should the board be performing iterative runs?
@@ -42,16 +52,20 @@ interface GameState {
 }
 
 
-class Game extends React.Component<GameProps, GameState> {
+class Game<P, S> extends React.Component<GameProps | P, GameState> {
 
   conwayGrid: ConwayGrid;
   initialGridState?: boolean[][]
   intervalTask?: NodeJS.Timer
+  name: string;
+  description: string;
 
   constructor(props: GameProps) {
     super(props);
 
-    this.conwayGrid = new ConwayGrid(props.grid),
+    this.conwayGrid = new ConwayGrid(props.grid);
+    this.name = props.name;
+    this.description = props.description;
 
     this.state = {
       boardState: this.conwayGrid.grid,
@@ -61,7 +75,7 @@ class Game extends React.Component<GameProps, GameState> {
     }
   }
 
-  updateAndCheckForStaticGrid() {
+  private updateAndCheckForStaticGrid() {
     const lastGridState = [...this.conwayGrid.grid].map(x => x.slice());
     this.conwayGrid.updateGrid();
     const gridIsStatic = this.conwayGrid.checkIfGridIsIdentical(lastGridState);
@@ -70,7 +84,7 @@ class Game extends React.Component<GameProps, GameState> {
     }
   }
 
-  startGame() {
+  private startGame() {
     this.initialGridState = this.conwayGrid.grid
     this.setState({running: true})
     this.intervalTask = setInterval(
@@ -88,17 +102,17 @@ class Game extends React.Component<GameProps, GameState> {
     )
   }
 
-  pauseGame() {
+  private pauseGame() {
     this.setState({running: false})
     clearInterval(this.intervalTask)
   }
 
-  clearGame() {
+  private clearGame() {
     this.conwayGrid.clearGrid();
     this.setState({running: false});
   }
 
-  resetGame() {
+  private resetGame() {
     if (this.initialGridState) {
       this.conwayGrid.grid = this.initialGridState;
       this.conwayGrid.generation = 1;
@@ -107,13 +121,13 @@ class Game extends React.Component<GameProps, GameState> {
     clearInterval(this.intervalTask)
   }
 
-  handleSwitchStaticBoardDetection(e: React.ChangeEvent<HTMLInputElement>) {
+  private handleSwitchStaticBoardDetection(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({
       detectStaticBoard: !this.state.detectStaticBoard
     })
   }
 
-  renderEncapsulatedGrid() {
+  public renderEncapsulatedGrid() {
     return (
       <FlexCol>
         <FlexRow marginBottom={10} borderRadius={10}>
@@ -137,7 +151,7 @@ class Game extends React.Component<GameProps, GameState> {
     )
   }
 
-  renderBoardTelemetry() {
+  private renderBoardTelemetry() {
     return (
       <FlexCol margin={2}>
         <CuteSubHeading text="Board Status" />
@@ -156,7 +170,7 @@ class Game extends React.Component<GameProps, GameState> {
     )
   }
 
-  renderInstructionsModal() {
+  public renderInstructionsModal() {
     /**
      * Render the JSX elements that provide an instruction modal
      */
@@ -192,7 +206,7 @@ class Game extends React.Component<GameProps, GameState> {
     )
   }
 
-  renderBoardControls() {
+  private renderBoardControls() {
     /**
      * Render the JSX elements to control the board's state
      */
@@ -263,7 +277,6 @@ class Game extends React.Component<GameProps, GameState> {
   }
 
   render() {
-
     return (
       <FlexCol>
           {this.renderInstructionsModal()}
@@ -274,4 +287,4 @@ class Game extends React.Component<GameProps, GameState> {
   }
 }
 
-export default Game 
+export default Game

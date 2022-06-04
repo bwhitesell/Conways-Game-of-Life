@@ -1,25 +1,29 @@
-import { Box, Button, Heading, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react'
-import React from 'react'
-import Game from '../components/Game'
-import { redirectLoggedOutUser } from '../utils'
-import { BACKEND_URL } from '../config'
-import BackendAPIWrapper from '../backendAPIWrapper'
-import { Navbar } from '../components/Navbar'
-import ValidatedInput from '../components/ValidatedInput'
+import { Box, Button, Heading, Input, InputGroup, InputLeftAddon } from '@chakra-ui/react';
+import React from 'react';
+import Game from '../components/Game';
+import { GameProps, GameState } from '../components/Game';
+import { redirectLoggedOutUser } from '../utils';
+import { BACKEND_URL } from '../config';
+import BackendAPIWrapper, { StatusMessage } from '../backendAPIWrapper';
+import { Navbar } from '../components/Navbar';
+import ValidatedInput, { ValidatedInputState } from '../components/ValidatedInput';
+import { FlexCol } from '../components/Layout';
 
 
-interface GameProps {
+interface CreateGameProps {
 
   /**
    * How wide and long to make the game board.
    */
   nVerticalCells: number;
   nHorizontalCells: number;
-  grid?: boolean[][]
 }
 
+type CreateGameState = {name: string, description: string} & GameState
 
-const generateGrid = (nVerticalCells: number, nHorizontalCells: number){
+
+
+const generateGrid = (nVerticalCells: number, nHorizontalCells: number): boolean[][] => {
   return Array(
     nVerticalCells
   ).fill([]).map(
@@ -27,28 +31,75 @@ const generateGrid = (nVerticalCells: number, nHorizontalCells: number){
   )
 }
 
+class CreateGame extends Game<CreateGameProps, CreateGameState> {
 
-class createGame extends Game {
+  initialGridState?: boolean[][];
+  nameInputData: ValidatedInputState;
+  descriptionInputData: ValidatedInputState;
 
-  nVerticalCells: number;
-  nHorizontalCells: number;
-  initialGridState?: boolean[][]
+  constructor(props: CreateGameProps) {
+    const gameProps: GameProps = {
+      grid: generateGrid(props.nVerticalCells, props.nHorizontalCells),
+      name: "",
+      description: "",
+    }
+    super(gameProps);
+    this.nameInputData = ValidatedInput.genInitState();
+    this.descriptionInputData = ValidatedInput.genInitState();
 
-  constructor(props: GameProps) {
-    props.grid = generateGrid(props.nVerticalCells, props.nHorizontalCells);
-    super(props)
+  }
+
+  private async validateNameInput(input: string) {
+    if (input.length < 25) {
+      return {error: false, message: "Name is valid."}
+    } else {
+      return {error: true, message: "Name is too long."}
+    }
+  }
+
+  private async validateDescriptionInput(input: string) {
+    if (input.length < 80) {
+      return {error: false, message: "Description is valid."}
+    } else {
+      return {error: true, message: "Description is too long."}
+    }
+  }
+
+
+  private renderMetadataForm() {
+    return (
+      <FlexCol>
+        <ValidatedInput isDisabled={this.state.running} name="Name"
+          state={this.nameInputData} typingDelay={1000}
+          validateInput={this.validateNameInput}
+        />
+        <ValidatedInput isDisabled={this.state.running} name="description"
+          state={this.descriptionInputData} typingDelay={1000}
+          validateInput={this.validateDescriptionInput}
+        />
+      </FlexCol>
+    )
+  }
+
+  override render() {
+    return (
+      <FlexCol>
+          {this.renderEncapsulatedGrid()}
+          {this.renderMetadataForm()}
+      </FlexCol>
+    )
+  }
+
 }
 
-  const nVerticalCells = 17;
-  const nHorizontalCells = 30;
-
-
+const create: React.FC = () => {
   return (
-    <Box>
+    <div>
       <Navbar />
-      <Game nHorizontalCells={30} nVerticalCells={17} />
-    </Box>
+      <CreateGame nHorizontalCells={30} nVerticalCells={17} />
+    </div>
   )
 }
+
 
 export default create 

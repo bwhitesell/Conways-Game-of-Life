@@ -7,11 +7,11 @@ class ConwayGrid {
    * created object methods.
    */
 
-  grid: boolean[][];
-  nVerticalCells: number;
-  nHorizontalCells: number;
-  nBoardCells: number;
-  generation: number;
+  public grid: boolean[][];
+  private nVerticalCells: number;
+  private nHorizontalCells: number;
+  public nBoardCells: number;
+  public generation: number;
 
   constructor(grid: boolean[][]) {
     this.grid = grid;
@@ -21,7 +21,7 @@ class ConwayGrid {
     this.nBoardCells = this.nVerticalCells * this.nHorizontalCells
   }
 
-  clearGrid() {
+  public clearGrid() {
     this.generation = 1;
     for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
       for (let colNum = 0; colNum < this.nHorizontalCells; colNum++) {
@@ -30,7 +30,7 @@ class ConwayGrid {
     }
   }
 
-  updateGrid() {
+  public updateGrid() {
     const newGrid = [];
 
     for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
@@ -52,7 +52,7 @@ class ConwayGrid {
     this.generation += 1;
   }
 
-  cellShouldLive(cellIsAlive: boolean, nNeighbors: number) {
+  private cellShouldLive(cellIsAlive: boolean, nNeighbors: number) {
     // Conway's Rules //
     if (cellIsAlive && [2, 3].includes(nNeighbors)) {
   
@@ -65,23 +65,23 @@ class ConwayGrid {
     return false
   }
 
-  nLiveCells() {
+  public nLiveCells() {
     return this.grid.map(
       (x: boolean[]) => x.filter(Boolean).length
     ).reduce((a, b) => a + b)
   }
 
-  nDeadCells() {
+  public nDeadCells() {
     return this.nBoardCells - this.nLiveCells()
   }
 
-  isBorderCell(x:number, y: number) {
+  public isBorderCell(x:number, y: number) {
       const xAtEdge = (0 >= x || x >= this.nHorizontalCells - 1);
       const yAtEdge = (0 >= y || y >= this.nVerticalCells - 1);
       return xAtEdge || yAtEdge
     }
   
-  coordinatesInBounds(x: number, y: number) {
+  private coordinatesInBounds(x: number, y: number) {
     const xInBounds = x >= 0 && x < this.nVerticalCells;
     const yInBounds = y >= 0 && y < this.nHorizontalCells;
     if (xInBounds && yInBounds) {
@@ -90,7 +90,7 @@ class ConwayGrid {
     return false
   }
 
-  checkIfGridIsIdentical(grid: boolean[][]) {
+  public checkIfGridIsIdentical(grid: boolean[][]) {
     for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {
       for (let colNum = 0; colNum < this.nHorizontalCells; colNum++) {
         if (grid[rowNum][colNum] !== this.grid[rowNum][colNum]) {
@@ -101,7 +101,7 @@ class ConwayGrid {
     return true
   }
 
-  getNumNeighbors(x: number, y: number) {
+  public getNumNeighbors(x: number, y: number) {
     const neighbors = [];
     for (let i = -1; i <= 1; i ++) {
       for (let j = -1; j <= 1; j ++) {

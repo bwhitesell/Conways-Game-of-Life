@@ -55,14 +55,12 @@ const Register: React.FC = () => {
       <form style={{minWidth: "300px"}}>
         <ValidatedInput name="Username"
           state={usernameState}
-          setState={setUsernameState}
           typingDelay={1000}
           validateInput={validateUsername}
         />
         <ValidatedInput
           name="Password"
           state={passwordState}
-          setState={setPasswordState}
           typingDelay={1000}
           validateInput={validatePassword}
         />
