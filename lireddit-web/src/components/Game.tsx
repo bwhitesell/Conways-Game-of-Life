@@ -155,7 +155,7 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
     return (
       <FlexCol margin={2}>
         <CuteSubHeading text="Board Status" />
-        <FlexRow backgroundColor="#d4d4d4" borderRadius="10px" p={5}>
+        <FlexRow backgroundColor="#d4d4d4" borderRadius="10px" p={5} flexWrap="wrap">
           <FlexCol margin={1}>
             <StatCellBtn desc="No. Alive Cells" value={this.conwayGrid.nLiveCells()} />
           </FlexCol>

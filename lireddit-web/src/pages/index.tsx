@@ -29,8 +29,8 @@ export default function Home() {
               <TabPanel>
                 <SignIn />
               </TabPanel>
-              <TabPanel>
                 <Register />
+              <TabPanel>
               </TabPanel>
             </TabPanels>
           </Tabs>

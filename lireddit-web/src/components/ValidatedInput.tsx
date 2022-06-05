@@ -27,23 +27,28 @@ export interface ValidatedInputState {
     typingDelay: number;
     hideValidityIcon?: boolean;
     validateInput: (input: string) => Promise<StatusMessage>;
+    setState?: React.Dispatch<React.SetStateAction<any>>
     isDisabled?: boolean;
+    fontFamily?: string;
+    fontSize?: string;
+
   }
 
 
-export default class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInputState> {
+class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInputState> {
 
   props: ValidatedInputProps;
   validationCheck: NodeJS.Timeout;
 
   constructor(props: ValidatedInputProps) {
-    super(props)
+    super(props);
+
     this.props = props;
     this.state = this.props.state;
     this.validationCheck = setTimeout(() => {}, 0);
   }
 
-  static genInitState(): ValidatedInputState {
+  public static genInitState(): ValidatedInputState {
     return {
       value: "",
       error: false,
@@ -52,18 +57,28 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps,
     }
   }
 
-  setStateAndUpdateReference(state: ValidatedInputState) {
+  private setStateAndUpdateReference(state: ValidatedInputState) {
     this.setState(state); // rerender this component
 
-    // update references to parent component(s) w/o a rerender.
-    this.props.state.value = state.value;
-    this.props.state.error = state.error;
-    this.props.state.message = state.message;
-    this.props.state.isPending = state.isPending;
+    /**
+     * If passed a setter, want to use it and let some
+     * parent component know to rerender. If not however
+     * we want to just pass the data back via the state
+     * reference and only rerender this component.
+     */
+    if (this.props.setState) {
+      this.props.setState(state);
+    } else {
+      // update references to parent component(s) w/o a rerender.
+      this.props.state.value = state.value;
+      this.props.state.error = state.error;
+      this.props.state.message = state.message;
+      this.props.state.isPending = state.isPending;
+    }
   }
 
-  async checkValue(value: string) {
-    const statusMessage = await this.props.validateInput(value)
+  private async checkValue(value: string) {
+    const statusMessage = await this.props.validateInput(value);
     this.setStateAndUpdateReference({
       value: value,
       error: statusMessage.error,
@@ -72,24 +87,24 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps,
     });
   }
 
-  onChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const newValue = e.target.value
+  private onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const newValue = e.target.value;
     this.setStateAndUpdateReference(
       {value: newValue, error: false, message: "", isPending: true}
     );
     clearTimeout(this.validationCheck);
     const newValidationCheck = setTimeout(
       () => this.checkValue(newValue), this.props.typingDelay
-    )
-    this.validationCheck = newValidationCheck
+    );
+    this.validationCheck = newValidationCheck;
   }
 
-  validityIcon() {
+  private validityIcon() {
     const shouldHideValidityIcon = (
       this.props.state.isPending ||
       this.props.state.value === "" ||
       this.props.hideValidityIcon
-    )
+    );
 
     if (shouldHideValidityIcon) {
       return undefined
@@ -102,7 +117,7 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps,
     }
   }
 
-  helperTextMessage() {
+  private helperTextMessage() {
     if (this.props.state.isPending && this.props.state.value !== "") {
       return <FormHelperText>Checking...</FormHelperText>
     } else if (this.props.state.error) {
@@ -115,10 +130,12 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps,
   render() {
     return (
       <FormControl display="flex" justifyContent="center" flexDirection="column" isInvalid={this.props.state.error} p={1}>
-        <FormLabel htmlFor={this.props.name}>{this.props.name}</FormLabel>
+        <FormLabel fontFamily={this.props.fontFamily} fontSize={this.props.fontSize} textColor="#770091" htmlFor={this.props.name}>{this.props.name}</FormLabel>
         <InputGroup>
           {this.validityIcon()}
           <Input
+            borderColor="#ff03e2"
+            focusBorderColor="#770091"
             isDisabled={this.props.isDisabled ? this.props.isDisabled : false}
             id={this.props.name}
             type={this.props.name}
@@ -132,3 +149,5 @@ export default class ValidatedInput extends React.Component<ValidatedInputProps,
   }
 
 }
+
+export default ValidatedInput

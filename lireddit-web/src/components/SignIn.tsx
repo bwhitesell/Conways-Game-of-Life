@@ -8,7 +8,7 @@ import Router from 'next/router';
 
 const SignIn: React.FC = () => {
  
-  const usernameState = ValidatedInput.genInitState();
+  const [usernameState, setUsernameState] = React.useState(ValidatedInput.genInitState());
   const [passwordState, setPasswordState] = React.useState(ValidatedInput.genInitState());
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -58,6 +58,7 @@ const SignIn: React.FC = () => {
       <form style={{minWidth: "300px"}}>
         <ValidatedInput name="Username"
           state={usernameState}
+          setState={setUsernameState}
           typingDelay={1000}
           validateInput={validateUsername}
           hideValidityIcon={true}
@@ -65,6 +66,7 @@ const SignIn: React.FC = () => {
         <ValidatedInput
           name="Password"
           state={passwordState}
+          setState={setPasswordState}
           typingDelay={1000}
           validateInput={validatePassword}
           hideValidityIcon={true}
