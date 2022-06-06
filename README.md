@@ -23,7 +23,7 @@ $ docker-compose up
 ```
 Two web servers should be spun up:
   - A next.js server that hosts the client code on port 3000
-  - An express.js server that acts as the server on port 4000
+  - An express.js server on port 4000
 
 Pop open a broswer and go to http://localhost:3000. I'd suggest sticking with chrome
 for now since the app tries to auto-play audio on page loads which most browsers
