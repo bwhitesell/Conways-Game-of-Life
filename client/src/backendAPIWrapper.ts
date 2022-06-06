@@ -25,23 +25,23 @@ class BackendAPIWrapper {
     this.baseURL = baseURL
   }
 
-  me(): Promise<UserDetails | StatusMessage> {
+  public me(): Promise<UserDetails | StatusMessage> {
     return this._getRequest(this.baseURL + "/me")
   }
 
-  logout(): void {
+  public logout(): void {
     this._getRequest(this.baseURL + "/logout")
   }
 
-  listSimulations(): Promise<SimulationData[] | StatusMessage > {
+  public listSimulations(): Promise<SimulationData[] | StatusMessage > {
     return this._getRequest(this.baseURL + "/listSimulations")
   }
 
-  getSimulation(simulationId: number): Promise<SimulationData | StatusMessage> {
+  public getSimulation(simulationId: number): Promise<SimulationData | StatusMessage> {
     return this._getRequest(this.baseURL + `/getSimulation/${simulationId}`)
   }
 
-  createSimulation(
+  public createSimulation(
     name: string,
     description: string,
     data: boolean[][]
@@ -54,32 +54,32 @@ class BackendAPIWrapper {
     )
   }
 
-  deleteSimulation(simulationId: number) {
+  public deleteSimulation(simulationId: number) {
     return this._deleteRequest(this.baseURL + `/deleteSimulation/${simulationId}`)
   }
 
-  registerUser(username: string, password: string): Promise<StatusMessage> {
+  public registerUser(username: string, password: string): Promise<StatusMessage> {
     return this._postRequest(
       this.baseURL + '/createUser',
       JSON.stringify({username: username, password: password})
     ) 
   }
 
-  loginUser(username: string, password: string): Promise<StatusMessage> {
+  public loginUser(username: string, password: string): Promise<StatusMessage> {
     return this._postRequest(
       this.baseURL + '/login',
       JSON.stringify({username: username, password: password})
     ) 
   }
 
-  checkUsernameValidity(username: string): Promise<StatusMessage> {
+  public checkUsernameValidity(username: string): Promise<StatusMessage> {
     return this._postRequest(
       this.baseURL + '/validateUsername',
       JSON.stringify({username: username})
     )
   }
 
-  checkPasswordValidity(password: string): Promise<StatusMessage> {
+  public checkPasswordValidity(password: string): Promise<StatusMessage> {
     return this._postRequest(
       this.baseURL + '/validatePassword',
       JSON.stringify({password: password})
