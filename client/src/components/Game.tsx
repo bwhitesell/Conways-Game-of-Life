@@ -1,12 +1,17 @@
-import { Box, Button, FormLabel, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Switch } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  FormLabel,
+  Heading,
+  Switch,
+} from '@chakra-ui/react';
 import React from 'react';
-import ConwayGrid from '../conwayGrid'
-import Board from './Board'
+
+import ConwayGrid from '../conwayGrid';
+import Board from './Board';
 import CuteSubHeading from './CuteSubHeading';
-import ValidatedInput, { ValidatedInputState } from './ValidatedInput'
-import { FlexCol, FlexRow } from './Layout';
-import siteCopy from '../textContents'
 import StatCellBtn from './StatCellBtn';
+import { FlexCol, FlexRow } from './Layout';
 
 
 export interface GameProps {
@@ -52,7 +57,7 @@ export interface GameState {
 }
 
 
-class Game<P, S> extends React.Component<GameProps | P, GameState> {
+class Game<P> extends React.Component<GameProps | P, GameState> {
 
   conwayGrid: ConwayGrid;
   initialGridState?: boolean[][]

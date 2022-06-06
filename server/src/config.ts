@@ -2,6 +2,8 @@ import Redis from "ioredis";
 import connectRedis from "connect-redis";
 import session from 'express-session'
 
+import { REDIS_URI, SESSION_SECRET } from './constants'
+
 
 const redisStore = connectRedis(session)
 
@@ -9,7 +11,7 @@ const redisStore = connectRedis(session)
 const SESSION_CONFIG: session.SessionOptions = {
   name: "cookie",
   store: new redisStore({
-    client: new Redis('redis://localhost:6379'),
+    client: new Redis(REDIS_URI),
     disableTouch: true,
   }),
   cookie: {
@@ -19,7 +21,7 @@ const SESSION_CONFIG: session.SessionOptions = {
     secure: false, // cookie only works in https
   },
   saveUninitialized: false,
-  secret: 'secret',
+  secret: SESSION_SECRET,
   resave: false,
 }
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { 
   FormControl,
   FormErrorMessage,
@@ -9,7 +10,7 @@ import {
   InputRightElement
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
-import React from 'react';
+
 import { StatusMessage } from '../backendAPIWrapper';
 
 
@@ -21,6 +22,7 @@ export interface ValidatedInputState {
     isPending: boolean;
   }
   
+
   export interface ValidatedInputProps {
     name: string;
     state: ValidatedInputState;

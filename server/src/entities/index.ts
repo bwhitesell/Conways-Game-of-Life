@@ -3,7 +3,8 @@ import Redis from 'ioredis'
 import sequelize from '../sequelizeClient'
 import { User } from './user'
 import { Simulation } from './simulation'
-import { ENV } from '../constants'
+import { simFixture } from './_devFixtures'
+import { ENV, REDIS_URI, CLEAR_REDIS_ON_DEV_START } from '../constants'
 
 
 function defineModelRelationships() {
@@ -13,8 +14,7 @@ function defineModelRelationships() {
 
 async function createDevData() {
   const user = await User.create({"id": 0, "username": 'm4ster_g4mer', "password": await argon2.hash('password')});
-  const simulation1 = await Simulation.create({name: 'First Test Board', description: "This is my first test at making a board.", data: '[[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false]]'});
-
+  const simulation1 = await Simulation.create(simFixture);
   simulation1.setUser(user);
 }
 
@@ -24,7 +24,9 @@ async function syncDBConnectedModels() {
   if (ENV === "development") {
     console.log("Environment detected as development. Syncing sequelize models...");
     // clear out redis if running in dev
-    new Redis('redis://localhost:6379').flushall('ASYNC', () => console.log('Redis flushed.'));
+    if (CLEAR_REDIS_ON_DEV_START) {
+      new Redis(REDIS_URI).flushall("ASYNC", () => console.log("Redis flushed."));
+    }
     await sequelize.sync({force: true});
     console.log('Creating dev data...')
     await createDevData();

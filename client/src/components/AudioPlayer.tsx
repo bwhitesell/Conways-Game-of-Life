@@ -10,13 +10,14 @@ interface AudioPlayerProps {
   children: JSX.Element;
 }
 
+
 interface AudioPlayerState {
   audio?: HTMLAudioElement | undefined;
 }
 
 
 class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
-  removeMoveMousePlayAudioListener: () => void;
+  private removeMoveMousePlayAudioListener: () => void;
 
   constructor(props: AudioPlayerProps) {
     super(props);
@@ -31,7 +32,7 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
 
   }
 
-  addMoveMousePlayAudioListener() {
+  private addMoveMousePlayAudioListener() {
     const playAudio = () => this.play()
     const removeMoveMousePlayAudioListener = () => {
       document.removeEventListener('mousemove', playAudio)
@@ -48,14 +49,14 @@ class AudioPlayer extends React.Component<AudioPlayerProps, AudioPlayerState> {
     this.removeMoveMousePlayAudioListener();
   }
 
-  play() {
+  private play() {
     this.state.audio?.play();
     if (!this.state.audio?.paused) {
       this.removeMoveMousePlayAudioListener();
     }
   }
 
-  pause() {
+  private pause() {
     this.removeMoveMousePlayAudioListener();
     this.state.audio?.pause();
   }

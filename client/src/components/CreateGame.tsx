@@ -1,15 +1,25 @@
 import React from 'react';
 import Router from 'next/router';
 import Game from './Game';
+import { 
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader, 
+  ModalOverlay,
+} from '@chakra-ui/react';
+
 import ValidatedInputForm from './ValidatedInputForm';
 import BackendAPIWrapper from '../backendAPIWrapper';
+import siteCopy from '../textContents';
+import Board from './Board';
 import { GameProps, GameState } from './Game';
 import { FlexCol } from './Layout';
 import { generateGrid } from '../utils'
 import { BACKEND_URL } from '../config';
-import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
-import siteCopy from '../textContents';
-import Board from './Board';
 
 
 interface CreateGameProps {

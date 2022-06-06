@@ -49,7 +49,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     this.animation()
   }
 
-  buttonId() {
+  private buttonId() {
     if (this.alive) {
       if (this.isTree) {
         return "aliveTreeCell"
@@ -65,7 +65,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     }
   }
 
-  backgroundColor() {
+  private backgroundColor() {
     if (this.isSettingCell) {
       return `rgba(217, 255, 227, ${this.state.opacity})`
     }
@@ -101,7 +101,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     return "white"
   }
     
-  async animateBirth() {
+  private async animateBirth() {
     for (let i = 1; i < 10; i+=1) {
       await new Promise(resolve => setTimeout(
         () => {
@@ -113,7 +113,7 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     }
   }
 
-  async animateDeath() {
+  private async animateDeath() {
     for (let i = 1; i < 100; i+=10) {
       await new Promise(resolve => setTimeout(
         () => {

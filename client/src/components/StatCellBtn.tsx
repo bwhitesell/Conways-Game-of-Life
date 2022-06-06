@@ -1,5 +1,5 @@
-import { Button, Heading } from "@chakra-ui/react"
 import React from "react"
+import { Button, Heading } from "@chakra-ui/react"
 
 
 interface TelemetryStatCellProps {

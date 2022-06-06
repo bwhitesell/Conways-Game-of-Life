@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Button, Heading } from "@chakra-ui/react";
 import Router from 'next/router'
+import { Box, Button, Heading } from "@chakra-ui/react";
+
 import BackendAPIWrapper from '../backendAPIWrapper';
 import { BACKEND_URL } from '../config';
 

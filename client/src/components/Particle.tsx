@@ -1,8 +1,5 @@
 import React from 'react';
-import BackendAPIWrapper from '../backendAPIWrapper';
-import ValidatedInput from './ValidatedInput';
-import { BACKEND_URL } from '../config';
-import { Box, Button, ChakraComponent, Heading } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 interface ParticleProps {
   initialX: number;

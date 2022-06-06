@@ -1,13 +1,16 @@
-import { Box, Button } from '@chakra-ui/react';
 import React from 'react';
+import { Box, Button } from '@chakra-ui/react';
+
 import { StatusMessage } from "../backendAPIWrapper";
 import ValidatedInput from "./ValidatedInput"
 import { ValidatedInputState } from "./ValidatedInput";
+
 
 interface ValidatedInputsState {
   isLoading: boolean;
   inputFieldStates: ValidatedInputState[];
 }
+
 
 interface ValidatedInputFormProps{
   inputFieldNames: string[];

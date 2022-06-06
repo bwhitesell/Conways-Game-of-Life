@@ -1,5 +1,5 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
+import { Box } from '@chakra-ui/react';
 
 
 interface FlexBoxProps {
@@ -24,4 +24,4 @@ const FlexRow: React.FC<FlexBoxProps> = (props) => {
 }
 
 
-export { FlexCol, FlexRow}
+export { FlexCol, FlexRow }

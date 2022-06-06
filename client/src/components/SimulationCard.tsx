@@ -1,6 +1,6 @@
-import { Box, Button, Heading } from '@chakra-ui/react'
 import React from 'react'
 import Router from 'next/router'
+import { Box, Heading } from '@chakra-ui/react'
 
 interface SimulationCardProps {
   simId: number;

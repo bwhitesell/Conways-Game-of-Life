@@ -1,4 +1,11 @@
 {
+  "watch": {
+    "test": "{src}/*.ts"
+  },
+  "scripts": {
+    "compile": "tsc && node dist/index.js",
+    "dev": "nodemon --watch ./src -e ts,tsx --exec 'npm run compile'"
+  },
   "dependencies": {
     "@types/connect-redis": "^0.0.18",
     "@types/cors": "^2.8.12",
@@ -10,6 +17,7 @@
     "express": "^4.18.1",
     "express-session": "^1.17.3",
     "ioredis": "^5.0.4",
+    "nodemon": "^2.0.16",
     "sequelize": "^6.19.0",
     "sqlite3": "^5.0.8",
     "ts-node": "^10.7.0",

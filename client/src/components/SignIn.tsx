@@ -1,10 +1,9 @@
 import React from 'react';
-import BackendAPIWrapper from '../backendAPIWrapper';
-import ValidatedInput from './ValidatedInput';
-import { BACKEND_URL } from '../config';
-import { Box, Button, Heading } from '@chakra-ui/react';
 import Router from 'next/router';
+
+import BackendAPIWrapper from '../backendAPIWrapper';
 import ValidatedInputForm from './ValidatedInputForm';
+import { BACKEND_URL } from '../config';
 
 
 const SignIn: React.FC = () => {
