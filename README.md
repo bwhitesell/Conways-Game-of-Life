@@ -21,7 +21,9 @@ $ git clone https://github.com/bwhitesell/Conways-Game-of-Life
 $ cd Conways-Game-of-Life
 $ docker-compose up
 ```
-
+Two web servers should be spun up --
+  - A next.js server that hosts the client code on port 3000
+  - An express.js server that acts as the server on port 4000
 ----
 
 
