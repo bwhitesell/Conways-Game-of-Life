@@ -7,6 +7,7 @@ import BackendAPIWrapper, { SimulationData } from '../backendAPIWrapper';
 import { BACKEND_URL } from '../config'
 import { FlexCol } from '../components/Layout';
 import Router from 'next/router';
+import Particle from '../components/Particle';
 
 interface HomeProps {
 
@@ -125,6 +126,7 @@ class Home extends React.Component<HomeProps, HomeState> {
             </Box>
           </Box>
         </FlexCol>
+      <Particle key="particle1" initialX={205} yDelay={0}/>
       </FlexCol>
     )
   }
