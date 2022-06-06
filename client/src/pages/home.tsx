@@ -1,10 +1,12 @@
-import { background, Box, Button, Heading, Skeleton, Stack } from '@chakra-ui/react';
+import { Box, Button, Heading, Skeleton, Stack } from '@chakra-ui/react';
 import React from 'react'
 import { redirectLoggedOutUser } from '../utils'
 import { SimulationCard } from '../components/SimulationCard'
 import { Navbar } from '../components/Navbar';
 import BackendAPIWrapper, { SimulationData } from '../backendAPIWrapper';
 import { BACKEND_URL } from '../config'
+import { FlexCol } from '../components/Layout';
+import Router from 'next/router';
 
 interface HomeProps {
 
@@ -30,14 +32,12 @@ class Home extends React.Component<HomeProps, HomeState> {
   async componentDidMount() {
     redirectLoggedOutUser("/");
 
-    setTimeout( async() => {
-      const simulations = await this.requestSimulationData();
-      this.setState({
-        loading: false,
-        simulations: this.buildJSXfromSimulationData(simulations)
-      })
-    }, 1000)
-    
+    const simulations = await this.requestSimulationData();
+
+    this.setState({
+      loading: false,
+      simulations: this.buildJSXfromSimulationData(simulations)
+    })
   }
 
   buildJSXfromSimulationData(simulationData: SimulationData[]): JSX.Element[] {
@@ -91,40 +91,41 @@ class Home extends React.Component<HomeProps, HomeState> {
 
   render() {
     return (
-      <Box>
+      <FlexCol>
         <Navbar />
-        <Box id="homeBody" width="100%" display="flex" justifyContent="center" p={5}>
-          <Box id="mySimulations" display="flex" flexDirection="column">
-            <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
-              <Heading
-                display="flex"
-                margin={5}
-                color="teal"
-                size="4xl"
-                fontFamily="Apple Chancery, cursive"
-              >
-                My Simulations
-              </Heading>
-              <Button
-                color="teal"
-                backgroundColor="#d1d1d1"
-                borderRadius={5}
-                margin={10}
-                p={5}
-                fontSize={20}
-                fontFamily="Apple Chancery, cursive"
-              >
-                New Simulation + 
-              </Button>
+        <FlexCol display="flex" marginTop={20} marginBottom={20} borderRadius={8} backgroundColor="#f2f2f2">
+          <Box id="homeBody" display="flex" justifyContent="center" p={5}>
+            <Box id="mySimulations" display="flex" flexDirection="column">
+              <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
+                <Heading
+                  display="flex"
+                  margin={5}
+                  color="teal"
+                  size="4xl"
+                  fontFamily="Apple Chancery, cursive"
+                >
+                  My Simulations
+                </Heading>
+                <Button
+                  color="teal"
+                  backgroundColor="#d1d1d1"
+                  borderRadius={5}
+                  margin={10}
+                  p={5}
+                  fontSize={20}
+                  fontFamily="Apple Chancery, cursive"
+                  onClick={() => Router.push("create")}
+                >
+                  New Simulation + 
+                </Button>
+              </Box>
+              {this.state.loading ? this.simSkeleton() : this.state.simulations}
             </Box>
-            {this.state.loading ? this.simSkeleton() : this.state.simulations}
+            <Box display="flex" justifyContent="center">
+            </Box>
           </Box>
-          <Box display="flex" justifyContent="center">
-           
-          </Box>
-        </Box>
-      
-      </Box>
+        </FlexCol>
+      </FlexCol>
     )
   }
 }

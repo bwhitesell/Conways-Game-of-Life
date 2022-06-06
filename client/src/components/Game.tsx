@@ -107,11 +107,6 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
     clearInterval(this.intervalTask)
   }
 
-  private clearGame() {
-    this.conwayGrid.clearGrid();
-    this.setState({running: false});
-  }
-
   private resetGame() {
     if (this.initialGridState) {
       this.conwayGrid.grid = this.initialGridState;
@@ -127,25 +122,23 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
     })
   }
 
-  public renderEncapsulatedGrid() {
+  public renderBoard() {
+    return (
+      <Board  conwayGrid={this.conwayGrid} />
+    )
+  }
+
+  public renderEncapsulatedBoard() {
     return (
       <FlexCol>
         <FlexRow marginBottom={10} borderRadius={10}>
-          <FlexRow
-            color="#752071"
-            backgroundColor="#ededed"
-            borderRadius={10}
-            marginTop={10}
-          >
+          <FlexRow color="#752071" backgroundColor="#ededed" borderRadius={10} marginTop={10}>
             {this.renderBoardControls()}
             {this.renderBoardTelemetry()}
           </FlexRow>
         </FlexRow>
         <FlexRow overflow="hidden" width="100vw">
-          <Board 
-            conwayGrid={this.conwayGrid}
-            setter={(x) => this.setState({boardState: x})}
-          />
+          {this.renderBoard()} 
         </FlexRow>
       </FlexCol>
     )
@@ -167,42 +160,6 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
           </FlexCol>
         </FlexRow>
       </FlexCol>
-    )
-  }
-
-  public renderInstructionsModal() {
-    /**
-     * Render the JSX elements that provide an instruction modal
-     */
-
-    const onClose = () => {this.setState({receivedInstructions: true})}
-    return (
-      <Modal isOpen={!this.state.receivedInstructions} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader 
-            borderRadius={5}
-            backgroundColor="lightgray"
-            textColor="#ff03e2"
-          >
-            {siteCopy.creationModal.heading}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <p>{siteCopy.creationModal.bodyPar1}</p>
-            <br></br>
-            <p>{siteCopy.creationModal.bodyPar2}</p>
-            <br></br>
-            <p>{siteCopy.creationModal.bodyPar3}</p>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button backgroundColor="#ff03e2" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     )
   }
 
@@ -249,13 +206,6 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
             >
               <Heading size="sm">Reset</Heading>
             </Button>
-            <Button
-              margin="10px"
-              onClick={() => this.clearGame()}
-              mb="0"
-            >
-              <Heading size="sm">Clear</Heading>
-            </Button>
             <Box display="flex" alignItems="center" p={3}>
               <FormLabel mb='0'>
                 End Game on Static States:
@@ -279,8 +229,7 @@ class Game<P, S> extends React.Component<GameProps | P, GameState> {
   render() {
     return (
       <FlexCol>
-          {this.renderInstructionsModal()}
-          {this.renderEncapsulatedGrid()}
+          {this.renderEncapsulatedBoard()}
       </FlexCol>
 
     )

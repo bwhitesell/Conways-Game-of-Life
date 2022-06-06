@@ -29,10 +29,14 @@ const Navbar: React.FC = () => {
     <Box>
       <Box id="navbar" borderRadius={2} backgroundColor="teal" display="flex"  p={3} position="fixed" top={0} width="100%" zIndex="10">
         <Box id="userIcon" display="flex" borderWidth={2} borderColor="black">
-          <img style={{width: "50px", height: "50px"}} src="/userIcon.jpeg"></img>
+          <a href="/home">
+            <img style={{width: "50px", height: "50px"}} src="/userIcon.jpeg"></img>
+          </a>
         </Box>
         <Box id="username" display="flex" p={3}>
+          <a href="/home">
           <Heading color="white" size="sm">{username}</Heading>
+          </a>
         </Box>
         <Box display="flex" marginLeft="auto">
           <Button onClick={signOut} colorScheme="teal" marginTop={1}>Sign Out</Button>

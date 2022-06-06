@@ -1,10 +1,7 @@
-import { Box, Button, Heading } from '@chakra-ui/react';
-import { Props } from 'framer-motion/types/types';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 import GridCell  from '../components/GridCell'
 import ConwayGrid from '../conwayGrid';
-import { ValidatedInputState } from './types';
-import ValidatedInput from './ValidatedInput';
 
 
 interface BoardProps {

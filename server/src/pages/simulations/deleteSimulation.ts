@@ -17,16 +17,18 @@ const deleteSimulation = async (req: RequestWithSession, res: Response) => {
       return res.status(404).send(PAGE_NOT_FOUND_MSG)
     }
 
-    if (requestedSimulation.hasUser(sessionUser)) {
+    const requestedSimulationUser = await requestedSimulation.getUser();
+
+    if (requestedSimulationUser.id === sessionUser.id) {
       await requestedSimulation.destroy();
-      sendJsonResponse({error: false, message: "simulation deleted"}, res)
+      sendJsonResponse({error: false, message: "simulation deleted"}, res);
     } else {
-      res.status(403)
-      sendJsonResponse({error: true, message: "permission denied"}, res)
+      res.status(403);
+      sendJsonResponse({error: true, message: "permission denied"}, res);
     }
 
   } else {
-    sendJsonResponse({error: true, message: 'not signed in'}, res)
+    sendJsonResponse({error: true, message: 'not signed in'}, res);
   }
 
 }

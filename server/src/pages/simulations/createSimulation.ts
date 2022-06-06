@@ -24,6 +24,7 @@ const createSimulation = async (req: RequestWithSession, res: Response) => {
 
   if (sessionUser) {
     reqBody.data = JSON.stringify(reqBody.data); // Need to serialize into string for db storage.
+    console.log(reqBody.data);
     const simulation = await Simulation.create(reqBody);
     simulation.setUser(sessionUser);
     sendJsonResponse({error: false, message: "simulation successfully created"}, res);

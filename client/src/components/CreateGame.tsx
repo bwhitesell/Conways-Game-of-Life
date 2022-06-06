@@ -7,6 +7,9 @@ import { GameProps, GameState } from './Game';
 import { FlexCol } from './Layout';
 import { generateGrid } from '../utils'
 import { BACKEND_URL } from '../config';
+import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import siteCopy from '../textContents';
+import Board from './Board';
 
 
 interface CreateGameProps {
@@ -68,10 +71,52 @@ class CreateGame extends Game<CreateGameProps, CreateGameState> {
     }
   }
 
+  public renderBoard() {
+    return (
+      <Board  conwayGrid={this.conwayGrid} setter={(x: any) => this.setState(x)} />
+    )
+  }
+  private renderInstructionsModal() {
+    /**
+     * Render the JSX elements that provide an instruction modal
+     */
+
+    const onClose = () => {this.setState({receivedInstructions: true})}
+    return (
+      <Modal isOpen={!this.state.receivedInstructions} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader 
+            borderRadius={5}
+            backgroundColor="lightgray"
+            textColor="#ff03e2"
+          >
+            {siteCopy.creationModal.heading}
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <p>{siteCopy.creationModal.bodyPar1}</p>
+            <br></br>
+            <p>{siteCopy.creationModal.bodyPar2}</p>
+            <br></br>
+            <p>{siteCopy.creationModal.bodyPar3}</p>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button backgroundColor="#ff03e2" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    )
+  }
+
   override render() {
     return (
       <FlexCol>
-        {this.renderEncapsulatedGrid()}
+        {this.renderInstructionsModal()}
+        {this.renderEncapsulatedBoard()}
         <ValidatedInputForm
           inputFieldNames={["Name", "Description"]}
           inputFieldValues={this.gameMetadata}

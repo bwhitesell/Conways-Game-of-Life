@@ -8,8 +8,8 @@ class ConwayGrid {
    */
 
   public grid: boolean[][];
-  private nVerticalCells: number;
-  private nHorizontalCells: number;
+  public nVerticalCells: number;
+  public nHorizontalCells: number;
   public nBoardCells: number;
   public generation: number;
 

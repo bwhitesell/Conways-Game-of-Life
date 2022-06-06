@@ -45,7 +45,7 @@ function constructExpressApp() {
 
   // simulation routes
   expressApp.get('/listSimulations', wrapPageRenderInTryCatch(listSimulations)) // multiple reads
-  expressApp.get('/getSimulation:simId', wrapPageRenderInTryCatch(getSimulation))  // read
+  expressApp.get('/getSimulation/:simId', wrapPageRenderInTryCatch(getSimulation))  // read
   expressApp.post('/createSimulation', wrapPageRenderInTryCatch(createSimulation))  // create
   expressApp.delete('/deleteSimulation:simId', wrapPageRenderInTryCatch(deleteSimulation))  // delete
 
