@@ -28,9 +28,11 @@ Two web servers should be spun up:
 Pop open a broswer and go to http://localhost:3000. I'd suggest sticking with chrome
 for now since the app tries to auto-play audio on page loads which most browsers
 do not like.
+
 For the sake of development the dev db is auto-populated with mock data. You can sign in
 with the user "m4ster_g4mer" and password "password" your you can register your own user
 of course.
+
 ----
 
 
