@@ -1,17 +1,23 @@
 version: "3.9"
 services:
 
+  redis:
+    image: redis:7.0.0-alpine
+    ports:
+      - 6379:6379
   server:
     build: ./server
+    depends_on:
+      - redis
     ports:
       - 4000:4000
     command: "npm run dev"
 
     environment:
-      - NODE_ENV=dev 
+      - NODE_ENV=development
       - CLEAR_REDIS_ON_DEV_START=false
       - SEQUELIZE_CONN_URI=sqlite://lr.db
-      - REDIS_URI=redis://redis:6380
+      - REDIS_URI=redis://redis:6379
       - SESSION_SECRET=2f3lkqjhl2fjk2h2f2lkfj3hflkj2hl
     volumes:
       - ./server/src:/home/node/server/src
@@ -23,9 +29,5 @@ services:
     command: "npm run dev"
     volumes:
       - ./client/src:/home/node/client/src
+      - ./client/public:/home/node/client/public
 
-
-  redis:
-    image: redis:7.0.0-alpine
-    ports:
-      - 6380:6380
