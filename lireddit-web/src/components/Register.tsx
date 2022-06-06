@@ -46,10 +46,10 @@ const Register: React.FC = () => {
       inputFieldValues={inputFieldValues}
       fieldNameFontFamily="Apple Chancery, cursive"
       fieldNameFontSize="30px"
-      inputFieldValidations={
-        [validateUsername, validatePassword]
-      }
+      formMaxWidth='500px'
+      inputFieldValidations={[validateUsername, validatePassword]}
       submissionButtonName="Register"
+      onSubmit={(e: React.MouseEvent<HTMLButtonElement>) => onSubmit(e)}
     />
   )
 }

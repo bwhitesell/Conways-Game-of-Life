@@ -4,20 +4,12 @@ import ValidatedInput from './ValidatedInput';
 import { BACKEND_URL } from '../config';
 import { Box, Button, Heading } from '@chakra-ui/react';
 import Router from 'next/router';
+import ValidatedInputForm from './ValidatedInputForm';
 
 
 const SignIn: React.FC = () => {
- 
-  const [usernameState, setUsernameState] = React.useState(ValidatedInput.genInitState());
-  const [passwordState, setPasswordState] = React.useState(ValidatedInput.genInitState());
-  const [isLoading, setIsLoading] = React.useState(false);
 
-  const disableSubmit = (
-    usernameState.isPending ||
-    passwordState.isPending ||
-    usernameState.error ||
-    passwordState.error
-  );
+  const inputFieldValues = ["", ""]
   
   const validateUsername = async (username: string) => {
     const error = username === "";
@@ -34,18 +26,16 @@ const SignIn: React.FC = () => {
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
-    setIsLoading(true);
     attemptSignIn();
 
     async function attemptSignIn() {
       const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
       const registrationStatus = await backendAPIWrapper.loginUser(
-        usernameState.value,
-        passwordState.value,
+        inputFieldValues[0],
+        inputFieldValues[1],
       );
 
       if (registrationStatus.error) {
-        setIsLoading(false)
         alert(registrationStatus.message)
       } else {
         Router.push('/home')
@@ -54,34 +44,16 @@ const SignIn: React.FC = () => {
   }
 
   return (
-    <Box display="block" maxW="sm" margin="auto">
-      <form style={{minWidth: "300px"}}>
-        <ValidatedInput name="Username"
-          state={usernameState}
-          setState={setUsernameState}
-          typingDelay={1000}
-          validateInput={validateUsername}
-          hideValidityIcon={true}
-        />
-        <ValidatedInput
-          name="Password"
-          state={passwordState}
-          setState={setPasswordState}
-          typingDelay={1000}
-          validateInput={validatePassword}
-          hideValidityIcon={true}
-        />
-        <Box display="flex" justifyContent="left" p={2}>
-          <Button 
-            isLoading={isLoading}
-            marginLeft="auto"
-            color="teal"
-            isDisabled={disableSubmit}
-            onClick={onSubmit}
-          >Login</Button>
-        </Box>
-      </form>
-    </Box>
+    <ValidatedInputForm
+      inputFieldNames={["Username", "Password"]}
+      inputFieldValues={inputFieldValues}
+      fieldNameFontFamily="Apple Chancery, cursive"
+      fieldNameFontSize="30px"
+      formMaxWidth='500px'
+      inputFieldValidations={[validateUsername, validatePassword]}
+      submissionButtonName="Sign In"
+      onSubmit={(e: React.MouseEvent<HTMLButtonElement>) => onSubmit(e)}
+    />
   )
 }
 

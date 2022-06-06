@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
   const signOut = async (e: React.MouseEvent) => {
     const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
     backendAPIWrapper.logout();
-    Router.push('/');
+    Router.push('/landing');
   }
 
   return (

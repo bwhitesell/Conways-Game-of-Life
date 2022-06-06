@@ -11,6 +11,7 @@ interface ValidatedInputsState {
 
 interface ValidatedInputFormProps{
   inputFieldNames: string[];
+  formMaxWidth: string;
   inputFieldValues: string[];
   inputFieldValidations: ((input: string) => Promise<StatusMessage>)[];
   submissionButtonName: string;
@@ -99,7 +100,7 @@ class ValidatedInputForm extends React.Component<ValidatedInputFormProps, Valida
   public override render() {
     return (
       <Box display="block" justifyContent="center" margin="auto" marginTop={10}>
-        <form style={{width: "50vw", margin: "auto", padding: "10px", borderRadius: "10px", display: "flex", flexWrap: "wrap"}}>
+        <form style={{width: "50vw", margin: "auto", padding: "10px", borderRadius: "10px", display: "flex", flexWrap: "wrap", maxWidth: this.props.formMaxWidth}}>
           {this.renderValidatedFields()}
           <Box display="flex" justifyContent="left" p={2}>
             <Button 

@@ -6,6 +6,7 @@ import createUser from './registration/createUser'
 import validateUsername from './registration/validateUsername'
 import validatePassword from './registration/validatePassword'
 import { SESSION_CONFIG } from '../config'
+import { wrapPageRenderInTryCatch } from './utils'
 
 import express from 'express'
 import { Request } from 'express'
@@ -33,20 +34,20 @@ function constructExpressApp() {
   // DEFINE ROUTES //
 
   // user routes
-  expressApp.get('/me', me)  // read
-  expressApp.post('/login', login)
-  expressApp.get('/logout', logout)
+  expressApp.get('/me', wrapPageRenderInTryCatch(me))  // read
+  expressApp.post('/login', wrapPageRenderInTryCatch(login))
+  expressApp.get('/logout', wrapPageRenderInTryCatch(logout))
 
   //registration routes
-  expressApp.post('/createUser', createUser)
-  expressApp.post('/validateUsername', validateUsername)
-  expressApp.post('/validatePassword', validatePassword)
+  expressApp.post('/createUser', wrapPageRenderInTryCatch(createUser))
+  expressApp.post('/validateUsername', wrapPageRenderInTryCatch(validateUsername))
+  expressApp.post('/validatePassword', wrapPageRenderInTryCatch(validatePassword))
 
   // simulation routes
-  expressApp.get('/listSimulations', listSimulations) // multiple reads
-  expressApp.get('/getSimulation:simId', getSimulation)  // read
-  expressApp.post('/createSimulation', createSimulation)  // create
-  expressApp.delete('/deleteSimulation:simId', deleteSimulation)  // delete
+  expressApp.get('/listSimulations', wrapPageRenderInTryCatch(listSimulations)) // multiple reads
+  expressApp.get('/getSimulation:simId', wrapPageRenderInTryCatch(getSimulation))  // read
+  expressApp.post('/createSimulation', wrapPageRenderInTryCatch(createSimulation))  // create
+  expressApp.delete('/deleteSimulation:simId', wrapPageRenderInTryCatch(deleteSimulation))  // delete
 
   console.log('Express app loaded...');
   return expressApp

@@ -1,13 +1,10 @@
+import * as argon2 from 'argon2'
+import Redis from 'ioredis'
+import sequelize from '../sequelizeClient'
 import { User } from './user'
 import { Simulation } from './simulation'
 import { ENV } from '../constants'
-import sequelize from '../sequelizeClient'
-import * as argon2 from 'argon2'
 
-const dbConnectedModels = [
-  User,
-  Simulation,
-]
 
 function defineModelRelationships() {
   Simulation.belongsTo(User, {foreignKey: "id_user"});
@@ -27,8 +24,11 @@ async function createDevData() {
 
 async function syncDBConnectedModels() {
   defineModelRelationships();
+
   if (ENV === "development") {
     console.log("Environment detected as development. Syncing sequelize models...");
+    // clear out redis if running in dev
+    const redis = new Redis('redis://localhost:6379').flushall('ASYNC', () => console.log('Redis flushed.'))
     await sequelize.sync({force: true});
     console.log('Creating dev data...')
     await createDevData();

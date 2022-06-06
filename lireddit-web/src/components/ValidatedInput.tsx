@@ -147,7 +147,6 @@ class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInput
       </FormControl>
     )
   }
-
 }
 
 export default ValidatedInput

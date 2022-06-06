@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
-import { Model } from 'sequelize/types';
-import { Session } from './index'
+import { RequestWithSession, Session } from './index'
 import { User, UserModel } from '../entities/user'
 
 const MIN_USERNAME_LENGTH = 6;
@@ -70,6 +69,18 @@ function validatePassword(password: string): statusMessage {
 }
 
 
+function wrapPageRenderInTryCatch(fn: Function) {
+  return async (req: Request | RequestWithSession, res: Response) => {
+    try {
+      return await fn(req, res);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e);
+    }
+  }
+}
+
+
 async function associateSessionWithUser(session: Session): Promise<(UserModel | undefined)> {
   /*
     Returns a promise of a user or undefined. If undefined session is not associated with a
@@ -101,5 +112,6 @@ export {
   validatePassword,
   sendJsonResponse,
   statusMessage,
-  associateSessionWithUser 
+  associateSessionWithUser,
+  wrapPageRenderInTryCatch,
 }
