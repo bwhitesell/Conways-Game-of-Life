@@ -76,10 +76,10 @@ class ConwayGrid {
   }
 
   public isBorderCell(x:number, y: number) {
-      const xAtEdge = (0 >= x || x >= this.nHorizontalCells - 1);
-      const yAtEdge = (0 >= y || y >= this.nVerticalCells - 1);
-      return xAtEdge || yAtEdge
-    }
+    const xAtEdge = (0 >= x || x >= this.nHorizontalCells - 1);
+    const yAtEdge = (0 >= y || y >= this.nVerticalCells - 1);
+    return xAtEdge || yAtEdge
+  }
   
   private coordinatesInBounds(x: number, y: number) {
     const xInBounds = x >= 0 && x < this.nVerticalCells;
