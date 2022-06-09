@@ -33,7 +33,7 @@ interface CreateGameProps {
 type CreateGameState = {name: string, description: string} & GameState;
 
 
-class CreateGame extends Game<CreateGameProps, CreateGameState> {
+class CreateGame extends Game<CreateGameProps> {
 
   initialGridState: boolean[][];
   gameMetadata: string[];
@@ -83,7 +83,7 @@ class CreateGame extends Game<CreateGameProps, CreateGameState> {
 
   public renderBoard() {
     return (
-      <Board  conwayGrid={this.conwayGrid} setter={(x: any) => this.setState(x)} />
+      <Board conwayGrid={this.conwayGrid} setter={(x: any) => this.setState(x)} />
     )
   }
   private renderInstructionsModal() {
