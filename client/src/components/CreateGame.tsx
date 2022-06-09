@@ -46,7 +46,7 @@ class CreateGame extends Game<CreateGameProps, CreateGameState> {
       description: "",
     }
     super(gameProps);
-    this.gameMetadata= ["", ""];
+    this.gameMetadata = ["", ""];
     this.initialGridState = gameProps.grid;
   }
 
