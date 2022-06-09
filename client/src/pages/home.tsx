@@ -37,11 +37,11 @@ class Home extends React.Component<HomeProps, HomeState> {
 
     this.setState({
       loading: false,
-      simulations: this.buildJSXfromSimulationData(simulations)
+      simulations: this.renderSimulationsList(simulations)
     })
   }
 
-  buildJSXfromSimulationData(simulationData: SimulationData[]): JSX.Element[] {
+  renderSimulationsList(simulationData: SimulationData[]): JSX.Element[] {
     if (simulationData.length > 0){
       const simulations = [];
       for (let i = 0; i < simulationData.length; i++) {
