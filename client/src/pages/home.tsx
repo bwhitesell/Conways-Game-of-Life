@@ -47,6 +47,7 @@ class Home extends React.Component<HomeProps, HomeState> {
       for (let i = 0; i < simulationData.length; i++) {
         simulations.push(
           <SimulationCard
+            key={simulationData[i].id}
             simId={simulationData[i].id}
             simName={simulationData[i].name}
             simDescription={simulationData[i].description}

@@ -87,6 +87,7 @@ class ValidatedInputForm extends React.Component<ValidatedInputFormProps, Valida
     for (let idx = 0; idx < this.props.inputFieldValues.length; idx++) {
       validatedFields.push(
         <ValidatedInput
+          key={idx}
           name={this.props.inputFieldNames[idx]}
           fontFamily={this.props.fieldNameFontFamily}
           fontSize={this.props.fieldNameFontSize}

@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
         setUsername(userDetails.username);
       }
     })
-  })
+  }, [])
 
   const signOut = async (e: React.MouseEvent) => {
     const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
