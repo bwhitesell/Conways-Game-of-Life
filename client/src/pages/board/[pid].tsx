@@ -5,13 +5,12 @@ import { useRouter } from 'next/router';
 import Game from '../../components/Game';
 import BackendAPIWrapper from '../../backendAPIWrapper';
 import { BACKEND_URL } from '../../config';
-import { redirectLoggedOutUser } from '../../utils';
 import { Navbar } from '../../components/Navbar';
 import { FlexCol } from '../../components/Layout';
+import { SignedInComponent } from '../../components/SignedInProvider';
 
 
 const gamePage: React.FC = () => {
-  redirectLoggedOutUser("/");
 
   const initPageState = {
     name: "",
@@ -44,23 +43,24 @@ const gamePage: React.FC = () => {
   }
 
   return (
-
-    <FlexCol>
-      <Navbar />
-    {gameData.isLoaded ? (
-      <Game 
-        grid={gameData.data}
-        name={gameData.name}
-        description={gameData.description} 
-      />
-    ) : (
-      <Stack margin={20}>
-        <Skeleton height='100px' />
-        <Skeleton height='100px' />
-        <Skeleton height='100px' />
-      </Stack>
-    )}
-    </FlexCol>
+    <SignedInComponent>
+      <FlexCol>
+        <Navbar />
+      {gameData.isLoaded ? (
+        <Game 
+          grid={gameData.data}
+          name={gameData.name}
+          description={gameData.description} 
+        />
+      ) : (
+        <Stack margin={20}>
+          <Skeleton height='100px' />
+          <Skeleton height='100px' />
+          <Skeleton height='100px' />
+        </Stack>
+      )}
+      </FlexCol>
+    </SignedInComponent>
   )
 }
 

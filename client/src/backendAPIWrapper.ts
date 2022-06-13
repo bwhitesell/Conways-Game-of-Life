@@ -5,10 +5,11 @@ export interface StatusMessage {
 }
 
 export interface UserDetails {
+  id: number;
   username: string;
   password: string;
   createdAt: string;
-  udatedAt: string;
+  updatedAt: string;
 }
 
 export interface SimulationData {

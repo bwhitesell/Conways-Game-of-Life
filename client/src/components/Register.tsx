@@ -3,12 +3,14 @@ import Router from 'next/router';
 
 import BackendAPIWrapper from '../backendAPIWrapper';
 import ValidatedInputForm from './ValidatedInputForm';
+import { SignedInContext } from '../components/SignedInProvider'
 import { BACKEND_URL } from '../config';
 
 
 const Register: React.FC = () => {
 
-  const inputFieldValues = ["", ""]
+  const inputFieldValues = ["", ""];
+  const signedInContext = React.useContext(SignedInContext);
  
   const validateUsername = async (username: string) => {
     const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
@@ -34,6 +36,7 @@ const Register: React.FC = () => {
       if (registrationStatus.error) {
         alert(registrationStatus.message)
       } else {
+        signedInContext.update();
         Router.push('/home')
       }
     }

@@ -1,5 +1,8 @@
 import Router from 'next/router';
+import React from 'react';
 import BackendAPIWrapper from './backendAPIWrapper'
+import Loading from './components/Loading';
+import { SignedInContext } from './components/SignedInProvider';
 import {BACKEND_URL} from './config'
 
 
@@ -12,23 +15,5 @@ const generateGrid = (nVertCells: number, nHorizCells: number): boolean[][] => {
 }
 
 
-const redirectLoggedInUser = async (redirectURL: string) => {
-  const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL)
-  const sessionData = await backendAPIWrapper.me();
-  const isLoggedIn = ("id" in sessionData);
-  if (isLoggedIn) {
-    Router.push(redirectURL)
-  }
-}
 
-
-const redirectLoggedOutUser = async (redirectURL: string) => {
-  const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL)
-  const sessionData = await backendAPIWrapper.me();
-  const isLoggedIn = ("id" in sessionData);
-  if (!isLoggedIn) {
-    Router.push(redirectURL)
-  }
-}
-
-export {redirectLoggedInUser, redirectLoggedOutUser, generateGrid }
+export { generateGrid }

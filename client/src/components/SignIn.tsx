@@ -3,12 +3,14 @@ import Router from 'next/router';
 
 import BackendAPIWrapper from '../backendAPIWrapper';
 import ValidatedInputForm from './ValidatedInputForm';
+import { SignedInContext } from './SignedInProvider'
 import { BACKEND_URL } from '../config';
 
 
 const SignIn: React.FC = () => {
 
-  const inputFieldValues = ["", ""]
+  const inputFieldValues = ["", ""];
+  const signedInContext = React.useContext(SignedInContext);
   
   const validateUsername = async (username: string) => {
     const error = username === "";
@@ -23,6 +25,7 @@ const SignIn: React.FC = () => {
 
   }
 
+
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
 
     attemptSignIn();
@@ -35,8 +38,10 @@ const SignIn: React.FC = () => {
       );
 
       if (registrationStatus.error) {
+        console.log(registrationStatus)
         alert(registrationStatus.message)
       } else {
+        signedInContext.update();
         Router.push('/home')
       }
     }

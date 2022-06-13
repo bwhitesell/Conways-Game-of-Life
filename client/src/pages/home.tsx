@@ -1,13 +1,14 @@
 import { Box, Button, Heading, Skeleton, Stack } from '@chakra-ui/react';
 import React from 'react'
-import { redirectLoggedOutUser } from '../utils'
+import Router from 'next/router';
 import { SimulationCard } from '../components/SimulationCard'
 import { Navbar } from '../components/Navbar';
+import { SignedInComponent } from '../components/SignedInProvider'
 import BackendAPIWrapper, { SimulationData } from '../backendAPIWrapper';
 import { BACKEND_URL } from '../config'
 import { FlexCol } from '../components/Layout';
-import Router from 'next/router';
 import Particle from '../components/Particle';
+import { Sign } from 'crypto';
 
 interface HomeProps {
 
@@ -31,10 +32,7 @@ class Home extends React.Component<HomeProps, HomeState> {
   }
 
   async componentDidMount() {
-    redirectLoggedOutUser("/");
-
     const simulations = await this.requestSimulationData();
-
     this.setState({
       loading: false,
       simulations: this.renderSimulationsList(simulations)
@@ -93,46 +91,49 @@ class Home extends React.Component<HomeProps, HomeState> {
 
   render() {
     return (
-      <FlexCol>
-        <Navbar />
-        <FlexCol display="flex" marginTop={20} marginBottom={20} borderRadius={8} backgroundColor="#f2f2f2">
-          <Box id="homeBody" display="flex" justifyContent="center" p={5}>
-            <Box id="mySimulations" display="flex" flexDirection="column">
-              <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
-                <Heading
-                  display="flex"
-                  margin={5}
-                  color="teal"
-                  size="4xl"
-                  fontFamily="Apple Chancery, cursive"
-                >
-                  My Simulations
-                </Heading>
-                <Button
-                  color="teal"
-                  backgroundColor="#d1d1d1"
-                  borderRadius={5}
-                  margin={10}
-                  p={5}
-                  fontSize={20}
-                  fontFamily="Apple Chancery, cursive"
-                  onClick={() => Router.push("create")}
-                >
-                  New Simulation + 
-                </Button>
+      <SignedInComponent>
+        <FlexCol>
+            <Navbar />
+            <FlexCol display="flex" marginTop={20} marginBottom={20} borderRadius={8} backgroundColor="#f2f2f2">
+              <Box id="homeBody" display="flex" justifyContent="center" p={5}>
+                <Box id="mySimulations" display="flex" flexDirection="column">
+                  <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
+                    <Heading
+                      display="flex"
+                      margin={5}
+                      color="teal"
+                      size="4xl"
+                      fontFamily="Apple Chancery, cursive"
+                    >
+                      My Simulations
+                    </Heading>
+                    <Button
+                      color="teal"
+                      backgroundColor="#d1d1d1"
+                      borderRadius={5}
+                      margin={10}
+                      p={5}
+                      fontSize={20}
+                      fontFamily="Apple Chancery, cursive"
+                      onClick={() => Router.push("create")}
+                    >
+                      New Simulation + 
+                    </Button>
+                  </Box>
+                  {this.state.loading ? this.simSkeleton() : this.state.simulations}
+                </Box>
+                <Box display="flex" justifyContent="center">
+                </Box>
               </Box>
-              {this.state.loading ? this.simSkeleton() : this.state.simulations}
-            </Box>
-            <Box display="flex" justifyContent="center">
-            </Box>
-          </Box>
+            </FlexCol>
+          <Particle key="particle1" initialX={205} yDelay={0}/>
         </FlexCol>
-      <Particle key="particle1" initialX={205} yDelay={0}/>
-      </FlexCol>
+      </SignedInComponent>
     )
   }
 }
 
+  
 export default Home
 
 
