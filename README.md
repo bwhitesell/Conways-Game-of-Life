@@ -35,7 +35,6 @@ the board implemented in this app is of finite size.
   - Responsiveinput checking
   - Alerts on submission errors.
 
-----
 
 ## Development installation
 To run the application in a development context -- you'll need 
