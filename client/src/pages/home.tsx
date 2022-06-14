@@ -6,7 +6,7 @@ import { Navbar } from '../components/Navbar';
 import { SignedInComponent } from '../components/SignedInProvider'
 import BackendAPIClient, { SimulationData } from '../backendAPIClient';
 import { BACKEND_URL } from '../config'
-import { FlexCol } from '../components/Layout';
+import { FlexCol, FlexRow } from '../components/Layout';
 import Particle from '../components/Particle';
 import { Sign } from 'crypto';
 
@@ -59,6 +59,22 @@ class Home extends React.Component<HomeProps, HomeState> {
     return undefined
   }
 
+  private renderNoSimsHeading(): JSX.Element {
+    return (
+      <Heading 
+        size="lg"
+        color="#546960"
+        textAlign="center"
+        backgroundColor="#d1d1d1"
+        p={5}
+        borderRadius={10}
+        margin={5}
+      >
+      No simulations created yet...
+      </Heading> 
+    )
+  }
+
   private genRemoveSimFromStateCB(simulationIdx: number) {
     return () => {
       if (this.state.simulations){
@@ -95,10 +111,15 @@ class Home extends React.Component<HomeProps, HomeState> {
       <SignedInComponent>
         <FlexCol>
             <Navbar />
-            <FlexCol display="flex" marginTop={20} marginBottom={20} borderRadius={8} backgroundColor="#f2f2f2">
-              <Box id="homeBody" display="flex" justifyContent="center" p={5}>
+            <FlexCol
+              marginTop={20}
+              marginBottom={20}
+              borderRadius={8}
+              backgroundColor="#f2f2f2"
+            >
+              <FlexRow p={5}>
                 <Box display="flex" justifyContent="center" flexDirection="column">
-                  <Box id ="myGamesHeading" display="flex" flexDirection="column" justifyContent="center">
+                  <FlexCol>
                     <Heading
                       display="flex"
                       margin="auto"
@@ -120,31 +141,20 @@ class Home extends React.Component<HomeProps, HomeState> {
                     >
                       New Game + 
                     </Button>
-                  </Box>
+                  </FlexCol>
                   { this.state.loading ? (
                       this.simSkeleton()
                     ) : (
                       (this.state.simulations!.length > 0) ? (
                         this.renderSimulationsList()
                       ) : (
-                        <Heading 
-                        size="lg"
-                        color="#546960"
-                        textAlign="center"
-                        backgroundColor="#d1d1d1"
-                        p={5}
-                        borderRadius={10}
-                        margin={5}
-                      >
-                        No simulations created yet...
-                      </Heading> 
+                        this.renderNoSimsHeading()
                       )
                     )
                   }
                 </Box>
-                <Box display="flex" justifyContent="center">
-                </Box>
-              </Box>
+              </FlexRow>
+              <Box display="flex" justifyContent="center" />
             </FlexCol>
         </FlexCol>
       </SignedInComponent>
