@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button } from '@chakra-ui/react';
 
-import { StatusMessage } from "../backendAPIWrapper";
+import { StatusMessage } from "../backendAPIClient";
 import ValidatedInput from "./ValidatedInput"
 import { ValidatedInputState } from "./ValidatedInput";
 

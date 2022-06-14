@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
-import { StatusMessage } from '../backendAPIWrapper';
+import { StatusMessage } from '../backendAPIClient';
 
 
 

@@ -12,7 +12,6 @@ const deleteSimulation = async (req: RequestWithSession, res: Response) => {
 
     const simulationId = Number(req.params.simId);
     const requestedSimulation = await Simulation.findOne({where: {id: simulationId}});
-
     if (!requestedSimulation) {
       return res.status(404).send(PAGE_NOT_FOUND_MSG)
     }

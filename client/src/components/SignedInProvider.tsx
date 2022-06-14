@@ -1,7 +1,7 @@
 import { Heading } from '@chakra-ui/react';
 import Router from 'next/router';
 import React from 'react'
-import BackendAPIWrapper from '../backendAPIWrapper'
+import BackendAPIClient from '../backendAPIClient'
 import { BACKEND_URL } from '../config'
 import Loading from './Loading';
 
@@ -35,10 +35,10 @@ const SignedInContext = React.createContext<SignedInUserContext>({
 
 const SignedInProvider: React.FC<{children: JSX.Element}> = (props) => {
   const [userData, setUserData] = React.useState(signedInUserInitStatus);
-  const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
+  const backendAPIClient = new BackendAPIClient(BACKEND_URL);
 
   const updateUserData = () => {
-    backendAPIWrapper.me().then((userData) => {
+    backendAPIClient.me().then((userData) => {
       if (!("message" in userData)) {
         setUserData({
           id: userData.id,

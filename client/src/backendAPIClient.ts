@@ -19,7 +19,7 @@ export interface SimulationData {
   data: boolean[][];
 }
 
-class BackendAPIWrapper {
+class BackendAPIClient {
   public baseURL: string;
 
   constructor(baseURL: string) {
@@ -30,8 +30,8 @@ class BackendAPIWrapper {
     return this._getRequest(this.baseURL + "/me")
   }
 
-  public logout(): void {
-    this._getRequest(this.baseURL + "/logout")
+  public async logout(): Promise<void> {
+    await this._getRequest(this.baseURL + "/logout")
   }
 
   public listSimulations(): Promise<SimulationData[] | StatusMessage > {
@@ -127,4 +127,4 @@ class BackendAPIWrapper {
 }
 
 
-export default BackendAPIWrapper
+export default BackendAPIClient

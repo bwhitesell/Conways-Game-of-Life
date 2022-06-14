@@ -1,5 +1,5 @@
 import React from 'react';
-import BackendAPIWrapper from '../backendAPIWrapper';
+import BackendAPIClient from '../backendAPIClient';
 import ValidatedInput from './ValidatedInput';
 import { BACKEND_URL } from '../config';
 import { Box, Button, Heading } from '@chakra-ui/react';

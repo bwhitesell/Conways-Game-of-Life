@@ -3,7 +3,7 @@ import { Box, Skeleton, Stack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
 import Game from '../../components/Game';
-import BackendAPIWrapper from '../../backendAPIWrapper';
+import BackendAPIClient from '../../backendAPIClient';
 import { BACKEND_URL } from '../../config';
 import { Navbar } from '../../components/Navbar';
 import { FlexCol } from '../../components/Layout';
@@ -28,8 +28,8 @@ const gamePage: React.FC = () => {
   }
 
   const getBoardData = async () => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    const simulationData = await backendAPIWrapper.getSimulation(pid);
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    const simulationData = await backendAPIClient.getSimulation(Number(pid));
     if (!("error" in simulationData)) {
       setGameData({...simulationData, isLoaded: true});
     } else {

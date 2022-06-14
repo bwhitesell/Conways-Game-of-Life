@@ -9,6 +9,35 @@ devised as a demo-project for author. For details on the automation checkout
 original automation operates on an infinitely large board. For the sake of simplicity
 the board implemented in this app is of finite size.
 
+----
+
+## Implemented Features
+
+- Accounts
+  - Session Management
+    - Sign-in
+    - Sign-out
+    - Permissioned Data Access
+
+  - Registration
+    - Create an account
+
+- Game configurations
+  - Create / simulate / save a game configuration
+  - Read / simulate an already built configuration
+  - Delete an already build configuration
+
+- Music Player
+  - Play/Pause functionality
+  - Auto-play on dom interaction (chrome)
+  - Continuous play through next.js redirects / page loads.
+
+- App Flow
+  - Redirects on entity manipulation when appropriate for ux.
+  - Responsiveinput checking
+  - Alerts on submission errors.
+
+----
 
 ## Development installation
 To run the application in a development context -- you'll need 

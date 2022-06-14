@@ -77,15 +77,17 @@ class Particle extends React.Component<ParticleProps, ParticleState> {
 
   render() {
     return (
-      <Box
-        position="absolute"
-        top={this.state.y}
-        left={this.state.x}
-        backgroundColor="#FFEA14"
-        width={this.particleWidth}
-        height={this.particleHeight}
-        zIndex={-1}
-      />
+      <Box position="relative" backgroundColor="#FFEA14">
+        <Box
+          position="absolute"
+          top={this.state.y}
+          left={this.state.x}
+          backgroundColor="#FFEA14"
+          width={this.particleWidth}
+          height={this.particleHeight}
+          zIndex={-1}
+        />
+      </Box>
     )
   }
 } 

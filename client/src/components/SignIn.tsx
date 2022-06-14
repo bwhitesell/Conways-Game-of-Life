@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-import BackendAPIWrapper from '../backendAPIWrapper';
+import BackendAPIClient from '../backendAPIClient';
 import ValidatedInputForm from './ValidatedInputForm';
 import { SignedInContext } from './SignedInProvider'
 import { BACKEND_URL } from '../config';
@@ -31,8 +31,8 @@ const SignIn: React.FC = () => {
     attemptSignIn();
 
     async function attemptSignIn() {
-      const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-      const registrationStatus = await backendAPIWrapper.loginUser(
+      const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+      const registrationStatus = await backendAPIClient.loginUser(
         inputFieldValues[0],
         inputFieldValues[1],
       );

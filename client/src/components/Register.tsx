@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'next/router';
 
-import BackendAPIWrapper from '../backendAPIWrapper';
+import BackendAPIClient from '../backendAPIClient';
 import ValidatedInputForm from './ValidatedInputForm';
 import { SignedInContext } from '../components/SignedInProvider'
 import { BACKEND_URL } from '../config';
@@ -13,13 +13,13 @@ const Register: React.FC = () => {
   const signedInContext = React.useContext(SignedInContext);
  
   const validateUsername = async (username: string) => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    return await backendAPIWrapper.checkUsernameValidity(username)
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    return await backendAPIClient.checkUsernameValidity(username)
   }
 
   const validatePassword = async (password: string) => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    return await backendAPIWrapper.checkPasswordValidity(password)
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    return await backendAPIClient.checkPasswordValidity(password)
   }
 
   const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,8 +27,8 @@ const Register: React.FC = () => {
     attemptUserRegistration();
 
     async function attemptUserRegistration() {
-      const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-      const registrationStatus = await backendAPIWrapper.registerUser(
+      const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+      const registrationStatus = await backendAPIClient.registerUser(
         inputFieldValues[0],
         inputFieldValues[1],
       );

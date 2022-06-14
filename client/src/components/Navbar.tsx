@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'next/router'
 import { Box, Button, Heading } from "@chakra-ui/react";
 
-import BackendAPIWrapper from '../backendAPIWrapper';
+import BackendAPIClient from '../backendAPIClient';
 import { BACKEND_URL } from '../config';
 import { SignedInComponent, SignedInContext } from './SignedInProvider';
 
@@ -10,12 +10,11 @@ import { SignedInComponent, SignedInContext } from './SignedInProvider';
 const Navbar: React.FC = () => {
   const signedInContext = React.useContext(SignedInContext)
 
-
   const signOut = async (e: React.MouseEvent) => {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    backendAPIWrapper.logout();
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    await backendAPIClient.logout();
     signedInContext.update();
-    Router.push('/landing');
+    await Router.push('/landing');
   }
 
   return (

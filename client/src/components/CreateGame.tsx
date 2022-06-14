@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import ValidatedInputForm from './ValidatedInputForm';
-import BackendAPIWrapper from '../backendAPIWrapper';
+import BackendAPIClient from '../backendAPIClient';
 import siteCopy from '../textContents';
 import Board from './Board';
 import { GameProps, GameState } from './Game';
@@ -29,7 +29,7 @@ interface CreateGameProps {
   nVerticalCells: number;
   nHorizontalCells: number;
 }
-  
+
 type CreateGameState = {name: string, description: string} & GameState;
 
 
@@ -51,8 +51,8 @@ class CreateGame extends Game<CreateGameProps> {
   }
 
   async onSubmit(e: React.MouseEvent<HTMLButtonElement>) {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    const simCreationStatus = await backendAPIWrapper.createSimulation(
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    const simCreationStatus = await backendAPIClient.createSimulation(
       this.gameMetadata[0],
       this.gameMetadata[1],
       this.initialGridState,

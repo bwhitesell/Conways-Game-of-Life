@@ -4,7 +4,7 @@ import Router from 'next/router';
 import { SimulationCard } from '../components/SimulationCard'
 import { Navbar } from '../components/Navbar';
 import { SignedInComponent } from '../components/SignedInProvider'
-import BackendAPIWrapper, { SimulationData } from '../backendAPIWrapper';
+import BackendAPIClient, { SimulationData } from '../backendAPIClient';
 import { BACKEND_URL } from '../config'
 import { FlexCol } from '../components/Layout';
 import Particle from '../components/Particle';
@@ -16,7 +16,7 @@ interface HomeProps {
 
 interface HomeState {
   loading: boolean;
-  simulations: undefined | JSX.Element[];
+  simulations: undefined | SimulationData[];
 
 }
 
@@ -35,12 +35,13 @@ class Home extends React.Component<HomeProps, HomeState> {
     const simulations = await this.requestSimulationData();
     this.setState({
       loading: false,
-      simulations: this.renderSimulationsList(simulations)
+      simulations: simulations
     })
   }
 
-  renderSimulationsList(simulationData: SimulationData[]): JSX.Element[] {
-    if (simulationData.length > 0){
+  private renderSimulationsList(): JSX.Element[] | undefined {
+    const simulationData = this.state.simulations;
+    if (simulationData){
       const simulations = [];
       for (let i = 0; i < simulationData.length; i++) {
         simulations.push(
@@ -49,28 +50,28 @@ class Home extends React.Component<HomeProps, HomeState> {
             simId={simulationData[i].id}
             simName={simulationData[i].name}
             simDescription={simulationData[i].description}
+            updateSimState={this.genRemoveSimFromStateCB(i)}
           />
         );
       }
       return simulations
-    } else {
-      return [<Heading 
-        size="lg"
-        color="#546960"
-        textAlign="center"
-        backgroundColor="#d1d1d1"
-        p={5}
-        borderRadius={10}
-        margin={5}
-      >
-        No simulations created yet...
-      </Heading>]
+    } 
+    return undefined
+  }
+
+  private genRemoveSimFromStateCB(simulationIdx: number) {
+    return () => {
+      if (this.state.simulations){
+        const newSimulations = [...this.state.simulations];
+        newSimulations.splice(simulationIdx, 1);  // drop the ith idx
+        this.setState({simulations: newSimulations})
+      }
     }
   }
 
-  async requestSimulationData(): Promise<SimulationData[]> {
-    const backendAPIWrapper = new BackendAPIWrapper(BACKEND_URL);
-    const simulations = await backendAPIWrapper.listSimulations();
+  private async requestSimulationData(): Promise<SimulationData[]> {
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    const simulations = await backendAPIClient.listSimulations();
     if ("error" in simulations) {
       console.log(`error retrieving simulation data: ${simulations.message}`);
       return []
@@ -79,7 +80,7 @@ class Home extends React.Component<HomeProps, HomeState> {
     }
   }
 
-  simSkeleton() {
+  private simSkeleton() {
     return (
       <Stack margin={5}>
         <Skeleton height='20px' />
@@ -96,16 +97,16 @@ class Home extends React.Component<HomeProps, HomeState> {
             <Navbar />
             <FlexCol display="flex" marginTop={20} marginBottom={20} borderRadius={8} backgroundColor="#f2f2f2">
               <Box id="homeBody" display="flex" justifyContent="center" p={5}>
-                <Box id="mySimulations" display="flex" flexDirection="column">
-                  <Box id ="mySimulationsHeading" display="flex" flexDirection="column">
+                <Box display="flex" justifyContent="center" flexDirection="column">
+                  <Box id ="myGamesHeading" display="flex" flexDirection="column" justifyContent="center">
                     <Heading
                       display="flex"
-                      margin={5}
+                      margin="auto"
                       color="teal"
                       size="4xl"
                       fontFamily="Apple Chancery, cursive"
                     >
-                      My Simulations
+                      My Games
                     </Heading>
                     <Button
                       color="teal"
@@ -117,16 +118,34 @@ class Home extends React.Component<HomeProps, HomeState> {
                       fontFamily="Apple Chancery, cursive"
                       onClick={() => Router.push("create")}
                     >
-                      New Simulation + 
+                      New Game + 
                     </Button>
                   </Box>
-                  {this.state.loading ? this.simSkeleton() : this.state.simulations}
+                  { this.state.loading ? (
+                      this.simSkeleton()
+                    ) : (
+                      (this.state.simulations!.length > 0) ? (
+                        this.renderSimulationsList()
+                      ) : (
+                        <Heading 
+                        size="lg"
+                        color="#546960"
+                        textAlign="center"
+                        backgroundColor="#d1d1d1"
+                        p={5}
+                        borderRadius={10}
+                        margin={5}
+                      >
+                        No simulations created yet...
+                      </Heading> 
+                      )
+                    )
+                  }
                 </Box>
                 <Box display="flex" justifyContent="center">
                 </Box>
               </Box>
             </FlexCol>
-          <Particle key="particle1" initialX={205} yDelay={0}/>
         </FlexCol>
       </SignedInComponent>
     )

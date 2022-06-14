@@ -3,7 +3,7 @@ import React from 'react'
 import Game from '../components/Game'
 import { redirectLoggedOutUser } from '../utils'
 import { BACKEND_URL } from '../config'
-import BackendAPIWrapper from '../backendAPIWrapper'
+import BackendAPIClient from '../backendAPIClient'
 
 
 const board: React.FC = () => {
