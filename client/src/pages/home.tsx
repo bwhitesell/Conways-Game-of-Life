@@ -7,8 +7,6 @@ import { SignedInComponent } from '../components/SignedInProvider'
 import BackendAPIClient, { SimulationData } from '../backendAPIClient';
 import { BACKEND_URL } from '../config'
 import { FlexCol, FlexRow } from '../components/Layout';
-import Particle from '../components/Particle';
-import { Sign } from 'crypto';
 
 interface HomeProps {
 
