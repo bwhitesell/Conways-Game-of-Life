@@ -9,8 +9,6 @@ devised as a demo-project for author. For details on the automation checkout
 original automation operates on an infinitely large board. For the sake of simplicity
 the board implemented in this app is of finite size.
 
-----
-
 ## Implemented Features
 
 - Accounts
