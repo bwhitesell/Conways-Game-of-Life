@@ -48,9 +48,7 @@ const gamePage: React.FC = () => {
         <Navbar />
       {gameData.isLoaded ? (
         <Game 
-          grid={gameData.data}
-          name={gameData.name}
-          description={gameData.description} 
+          initGridState={gameData.data}
         />
       ) : (
         <Stack margin={20}>

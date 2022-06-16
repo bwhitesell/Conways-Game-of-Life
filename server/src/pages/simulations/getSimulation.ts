@@ -19,7 +19,8 @@ const getSimulation = async (req: RequestWithSession, res: Response) => {
     const requestedSimulation = await Simulation.findOne({where: {id: simulationId}});
 
     if (!requestedSimulation) {
-      return res.status(404).send(PAGE_NOT_FOUND_MSG)
+      res.status(404);
+      return sendJsonResponse({error: true, message: "404"}, res);
     }
 
     const requestedSimulationUser = await requestedSimulation.getUser();

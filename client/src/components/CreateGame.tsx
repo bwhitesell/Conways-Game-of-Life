@@ -1,6 +1,5 @@
 import React from 'react';
 import Router from 'next/router';
-import Game from './Game';
 import { 
   Button,
   Modal,
@@ -15,11 +14,11 @@ import {
 import ValidatedInputForm from './ValidatedInputForm';
 import BackendAPIClient from '../backendAPIClient';
 import siteCopy from '../textContents';
-import Board from './Board';
-import { GameProps, GameState } from './Game';
 import { FlexCol } from './Layout';
 import { generateGrid } from '../utils'
 import { BACKEND_URL } from '../config';
+import Game from './Game';
+import ConwayGrid from '../conwayGrid';
 
 
 interface CreateGameProps {
@@ -30,38 +29,43 @@ interface CreateGameProps {
   nHorizontalCells: number;
 }
 
-type CreateGameState = {name: string, description: string} & GameState;
+
+type CreateGameState = {
+  // has the user been fed the instructions modal?
+  receivedInstructions: boolean;
+}
 
 
-class CreateGame extends Game<CreateGameProps> {
-
-  initialGridState: boolean[][];
-  gameMetadata: string[];
+class CreateGame extends React.Component<CreateGameProps, CreateGameState> {
+  props: CreateGameProps;
+  initBoardConfig: boolean[][]
 
   constructor(props: CreateGameProps) {
-
-    const gameProps: GameProps = {
-      grid: generateGrid(props.nVerticalCells, props.nHorizontalCells),
-      name: "",
-      description: "",
-    }
-    super(gameProps);
-    this.gameMetadata = ["", ""];
-    this.initialGridState = gameProps.grid;
+    super(props);
+    this.props = props;
+    this.state = {receivedInstructions: false}
+    this.initBoardConfig = generateGrid(
+      this.props.nVerticalCells,
+      this.props.nHorizontalCells,
+    )
   }
 
-  async onSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+  async submitNewGameToBackendAndRedir(fieldValues: string[]) {
+
+    const boardName = fieldValues[0];
+    const boardDescription = fieldValues[1];
+
+    console.log(this.initBoardConfig)
     const backendAPIClient = new BackendAPIClient(BACKEND_URL);
     const simCreationStatus = await backendAPIClient.createSimulation(
-      this.gameMetadata[0],
-      this.gameMetadata[1],
-      this.initialGridState,
+      boardName,
+      boardDescription,
+      this.initBoardConfig,
     )
-
     if (simCreationStatus.error) {
       alert(`Unable to save game. Error Message: ${simCreationStatus.message}`);
     } else {
-      Router.push('/home')
+      await Router.push('/home')
     }
   }
 
@@ -81,11 +85,6 @@ class CreateGame extends Game<CreateGameProps> {
     }
   }
 
-  public renderBoard() {
-    return (
-      <Board conwayGrid={this.conwayGrid} setter={(x: any) => this.setState(x)} />
-    )
-  }
   private renderInstructionsModal() {
     /**
      * Render the JSX elements that provide an instruction modal
@@ -122,21 +121,36 @@ class CreateGame extends Game<CreateGameProps> {
     )
   }
 
-  override render() {
+  private renderInputForm() {
+    return (
+      <ValidatedInputForm
+        inputFieldNames={["Name", "Description"]}
+        fieldNameFontFamily="Apple Chancery, cursive"
+        fieldNameFontSize="25px"
+        formMaxWidth='700px'
+        inputFieldValidations={[this.validateNameInput, this.validateDescriptionInput]}
+        submissionButtonName="Save Board"
+        onSubmit={
+          (fieldValues: string[]) => this.submitNewGameToBackendAndRedir(fieldValues)
+        }
+      />
+    )
+  }
+
+  private renderGame() {
+    return (
+      <Game 
+        initGridState={this.initBoardConfig}
+      />
+    )
+  }
+
+  public override render() {
     return (
       <FlexCol>
         {this.renderInstructionsModal()}
-        {this.renderEncapsulatedBoard()}
-        <ValidatedInputForm
-          inputFieldNames={["Name", "Description"]}
-          inputFieldValues={this.gameMetadata}
-          fieldNameFontFamily="Apple Chancery, cursive"
-          fieldNameFontSize="25px"
-          formMaxWidth='700px'
-          inputFieldValidations={[this.validateNameInput, this.validateDescriptionInput]}
-          submissionButtonName="Save Board"
-          onSubmit={(e: React.MouseEvent<HTMLButtonElement>) => this.onSubmit(e)}
-        />
+        {this.renderGame()}
+        {this.renderInputForm()}
       </FlexCol>
     )
   }

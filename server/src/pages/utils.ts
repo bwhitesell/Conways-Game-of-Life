@@ -25,7 +25,7 @@ async function validateUsername(username: string): Promise<statusMessage> {
   if (username.length < MIN_USERNAME_LENGTH) {
     return {
       error: true,
-      message: `Username must be of length ${MIN_USERNAME_LENGTH}`
+      message: `Username must be of length ${MIN_USERNAME_LENGTH} or longer.`
     }
   }
   

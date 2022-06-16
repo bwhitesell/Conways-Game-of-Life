@@ -17,18 +17,9 @@ import { FlexCol, FlexRow } from './Layout';
 export interface GameProps {
 
   /**
-   * How wide and long to make the game board.
+   * A conway grid with the initial state
    */
-  grid: boolean[][];
-  /**
-   * The name of the game instance
-   */
-  name: string;
-
-  /**
-   * A description of the game instance
-   */
-  description: string;
+  initGridState: boolean[][];
 }
 
 
@@ -53,27 +44,22 @@ export interface GameState {
    * Should the board be performing iterative runs?
    */
   running: boolean;
-
 }
 
 
-class Game<P> extends React.Component<GameProps | P, GameState> {
+class Game extends React.Component<GameProps, GameState> {
 
-  conwayGrid: ConwayGrid;
-  initialGridState?: boolean[][]
-  intervalTask?: NodeJS.Timer
-  name: string;
-  description: string;
+  initGridState: boolean[][];
+  activeConwayGrid: ConwayGrid;
+  intervalTask?: NodeJS.Timer;
 
   constructor(props: GameProps) {
     super(props);
-
-    this.conwayGrid = new ConwayGrid(props.grid);
-    this.name = props.name;
-    this.description = props.description;
+    this.initGridState = props.initGridState;
+    this.activeConwayGrid = new ConwayGrid(this.initGridState);
 
     this.state = {
-      boardState: this.conwayGrid.grid,
+      boardState: this.activeConwayGrid.grid,
       running: false,
       receivedInstructions: false,
       detectStaticBoard: true,
@@ -81,26 +67,25 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
   }
 
   private updateAndCheckForStaticGrid() {
-    const lastGridState = [...this.conwayGrid.grid].map(x => x.slice());
-    this.conwayGrid.updateGrid();
-    const gridIsStatic = this.conwayGrid.checkIfGridIsIdentical(lastGridState);
+    const lastGridState = this.activeConwayGrid.deepCopy().grid;
+    this.activeConwayGrid.updateGrid();
+    const gridIsStatic = this.activeConwayGrid.checkIfGridIsIdentical(lastGridState);
     if (gridIsStatic) {
       this.setState({running: false})
     }
   }
 
   private startGame() {
-    this.initialGridState = this.conwayGrid.grid
-    this.setState({running: true})
+    this.setState({running: true});
     this.intervalTask = setInterval(
       () => {
         if (this.state.running) {
           if (this.state.detectStaticBoard) {
             this.updateAndCheckForStaticGrid();
           } else {
-            this.conwayGrid.updateGrid();
+            this.activeConwayGrid.updateGrid();
           }
-          this.setState({boardState: this.conwayGrid.grid})
+          this.forceUpdate();
         }
       },
       400
@@ -108,17 +93,14 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
   }
 
   private pauseGame() {
-    this.setState({running: false})
-    clearInterval(this.intervalTask)
+    this.setState({running: false});
+    clearInterval(this.intervalTask);
   }
 
   private resetGame() {
-    if (this.initialGridState) {
-      this.conwayGrid.grid = this.initialGridState;
-      this.conwayGrid.generation = 1;
-    }
-    this.setState({running: false, boardState: this.conwayGrid.grid})
-    clearInterval(this.intervalTask)
+    this.activeConwayGrid.resetGrid(this.initGridState);
+    this.setState({running: false});
+    clearInterval(this.intervalTask);
   }
 
   private handleSwitchStaticBoardDetection(e: React.ChangeEvent<HTMLInputElement>) {
@@ -127,25 +109,18 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
     })
   }
 
-  public renderBoard() {
-    return (
-      <Board  conwayGrid={this.conwayGrid} />
-    )
+  onCellClick(rowNum: number, colNum: number) {
+    this.activeConwayGrid.grid[rowNum][colNum] = !this.activeConwayGrid.grid[rowNum][colNum];
+    this.initGridState = this.activeConwayGrid.deepCopy().grid;
+    this.forceUpdate();
   }
 
-  public renderEncapsulatedBoard() {
+  public renderBoard() {
     return (
-      <FlexCol>
-        <FlexRow marginBottom={10} borderRadius={10}>
-          <FlexRow color="#752071" backgroundColor="#ededed" borderRadius={10} marginTop={10}>
-            {this.renderBoardControls()}
-            {this.renderBoardTelemetry()}
-          </FlexRow>
-        </FlexRow>
-        <FlexRow overflow="hidden" width="100vw">
-          {this.renderBoard()} 
-        </FlexRow>
-      </FlexCol>
+      <Board
+        conwayGrid={this.activeConwayGrid}
+        onCellClick={(rowNum, colNum) => this.onCellClick(rowNum, colNum)}
+      />
     )
   }
 
@@ -155,13 +130,13 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
         <CuteSubHeading text="Board Status" />
         <FlexRow backgroundColor="#d4d4d4" borderRadius="10px" p={5} flexWrap="wrap">
           <FlexCol margin={1}>
-            <StatCellBtn desc="No. Alive Cells" value={this.conwayGrid.nLiveCells()} />
+            <StatCellBtn desc="No. Alive Cells" value={this.activeConwayGrid.nLiveCells()} />
           </FlexCol>
           <FlexCol margin={1}>
-            <StatCellBtn desc="No. Dead Cells" value={this.conwayGrid.nDeadCells()} />
+            <StatCellBtn desc="No. Dead Cells" value={this.activeConwayGrid.nDeadCells()} />
           </FlexCol>
           <FlexCol margin={1}>
-            <StatCellBtn desc="Generations" value={this.conwayGrid.generation} />
+            <StatCellBtn desc="Generations" value={this.activeConwayGrid.generation} />
           </FlexCol>
         </FlexRow>
       </FlexCol>
@@ -190,7 +165,7 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
           >
             <Button
               isLoading={this.state.running}
-              isDisabled={(this.conwayGrid.nLiveCells() <= 0)}
+              isDisabled={(this.activeConwayGrid.nLiveCells() <= 0)}
               margin="10px"
               onClick={() => this.startGame()}
             >
@@ -204,7 +179,7 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
               <Heading size="sm">Pause</Heading>
             </Button>
             <Button
-              isDisabled={this.conwayGrid.generation === 1}
+              isDisabled={this.activeConwayGrid.generation === 1}
               margin="10px"
               onClick={() => this.resetGame()}
               mb="0"
@@ -231,12 +206,19 @@ class Game<P> extends React.Component<GameProps | P, GameState> {
     )
   }
 
-  render() {
+  public override render() {
     return (
       <FlexCol>
-          {this.renderEncapsulatedBoard()}
+        <FlexRow marginBottom={10} borderRadius={10}>
+          <FlexRow color="#752071" backgroundColor="#ededed" borderRadius={10} marginTop={10}>
+            {this.renderBoardControls()}
+            {this.renderBoardTelemetry()}
+          </FlexRow>
+        </FlexRow>
+        <FlexRow overflow="hidden" width="100vw">
+          {this.renderBoard()} 
+        </FlexRow>
       </FlexCol>
-
     )
   }
 }

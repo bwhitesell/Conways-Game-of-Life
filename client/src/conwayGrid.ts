@@ -21,6 +21,16 @@ class ConwayGrid {
     this.nBoardCells = this.nVerticalCells * this.nHorizontalCells
   }
 
+  public deepCopy() {
+    const newGrid = [...this.grid].map((x) => x.slice());
+    return new ConwayGrid(newGrid)
+  }
+
+  public resetGrid(boardState: boolean[][]) {
+    this.grid = boardState;
+    this.generation = 1;
+  }
+
   public clearGrid() {
     this.generation = 1;
     for (let rowNum = 0; rowNum < this.nVerticalCells; rowNum ++) {

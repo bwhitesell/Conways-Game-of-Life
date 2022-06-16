@@ -20,6 +20,7 @@ export default async (req: RequestWithSession, res: Response) => {
     const reqUser = await User.findOne({where: {username: reqUsername}})
   
     if (reqUser) {
+      console.log(reqUser.password)
       // validate password
       if (await argon2.verify(reqUser.password, reqPassword)) {
 

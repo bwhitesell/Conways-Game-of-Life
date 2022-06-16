@@ -10,37 +10,25 @@ interface BoardProps {
    * A configuration for the board. 
    */
   conwayGrid: ConwayGrid;
-  setter?: (x: boolean[][]) => void;
+  onCellClick: (rowNum: number, colNum: number) => void;
 }
-
 
 class Board extends React.Component<BoardProps> {
   /**
    * React component to render the grid of cells that displays and can potentially
-   * update the game of life. Because the board can be initialized in a directly
-   * interactive AND indirectly interactive context, setter is optional.
-   * 
-   * setter?:
-   *  If the setter argument is passed, the board state can be updated through button
-   *  clicks. If not, the board state can only be updated via an update of the
-   *  references by parent components and this component is soley responsible for
-   *  display.
+   * update the game of life.
+   *
+   * onCellClick:
+   * callback to run with row/col args when cell is clicked.
    */
 
   conwayGrid: ConwayGrid;
-  setter?: (x: boolean[][]) => void;
+  onCellClick: (rowNum: number, colNum: number) => void;
 
   constructor(props: BoardProps) {
     super(props);
     this.conwayGrid = props.conwayGrid;
-    this.setter = props.setter;
-  }
-
-  updateConwayGrid(rowNum: number, colNum: number) {
-    if (this.setter) { // only allow updates if the setter is passed
-      this.conwayGrid.grid[rowNum][colNum] = !this.conwayGrid.grid[rowNum][colNum]
-      this.setter(this.conwayGrid.grid)
-    }
+    this.onCellClick = props.onCellClick;
   }
 
   renderGrid() {
@@ -64,7 +52,7 @@ class Board extends React.Component<BoardProps> {
             isSettingCell={this.conwayGrid.generation === 1}
             nNeighbors={this.conwayGrid.getNumNeighbors(rowNum, colNum)}
             alive={cellIsAlive}
-            onClick={() => this.updateConwayGrid(rowNum, colNum)}
+            onClick={() => this.onCellClick(rowNum, colNum)}
             isTree={((rowNum + colNum) % 2 === 0)}
             isBorderCell={this.conwayGrid.isBorderCell(colNum, rowNum)}
           />

@@ -15,10 +15,9 @@ interface ValidatedInputsState {
 interface ValidatedInputFormProps{
   inputFieldNames: string[];
   formMaxWidth: string;
-  inputFieldValues: string[];
   inputFieldValidations: ((input: string) => Promise<StatusMessage>)[];
   submissionButtonName: string;
-  onSubmit?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onSubmit?: (fieldValues: string[]) => void;
   fieldNameFontFamily?: string;
   fieldNameFontSize?: string;
 
@@ -33,37 +32,30 @@ class ValidatedInputForm extends React.Component<ValidatedInputFormProps, Valida
     super(props);
 
     this.props = props;
-    this.validateCompliantPropLengths();
 
     this.state = {
       isLoading: false,
-      inputFieldStates: this.props.inputFieldValues.map(
+      inputFieldStates: this.props.inputFieldNames.map(
         x => {
           const initInputState = ValidatedInput.genInitState();
-          initInputState.value = x
+          initInputState.value = "";
           return initInputState
         }
       )
     };
   }
 
-  private validateCompliantPropLengths() {
-    if (this.props.inputFieldNames.length !== this.props.inputFieldValues.length) {
-      throw "Invalid arguments passed to ValidatedInputForm Component";
-    }
-  }
-
   private onSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     this.setState({isLoading: true});
     if (this.props.onSubmit) {
-      this.props.onSubmit(e);
+      this.props.onSubmit(this.state.inputFieldStates.map((x) => x.value));
     }
     this.setState({isLoading: false});
   }
 
   private isDisabled() {
     let isDisabled = false;
-    for (let idx = 0; idx < this.props.inputFieldValues.length; idx++) {
+    for (let idx = 0; idx < this.state.inputFieldStates.length; idx++) {
       const fieldHasError = this.state.inputFieldStates[idx].error;
       const fieldIsPending = this.state.inputFieldStates[idx].isPending;
       isDisabled = isDisabled || fieldHasError || fieldIsPending;
@@ -74,17 +66,12 @@ class ValidatedInputForm extends React.Component<ValidatedInputFormProps, Valida
   private setStateOnField(fieldIdx: number, state: ValidatedInputState) {
     const inputFieldStates = [...this.state.inputFieldStates];
     inputFieldStates[fieldIdx] = state;
-
-    // pass data up to parent via reference w/o requiring a parent component 
-    // rerender
-    this.props.inputFieldValues[fieldIdx] = state.value;
-    // pass data up to this components state so form can rerender
     this.setState({inputFieldStates: inputFieldStates})
   }
 
   private renderValidatedFields() {
     const validatedFields = [];
-    for (let idx = 0; idx < this.props.inputFieldValues.length; idx++) {
+    for (let idx = 0; idx < this.state.inputFieldStates.length; idx++) {
       validatedFields.push(
         <ValidatedInput
           key={idx}

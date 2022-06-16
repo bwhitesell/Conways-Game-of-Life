@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import * as argon2 from 'argon2'
 import { User } from '../../entities/user'
 import { RequestWithSession } from '../index'
 import { sendJsonResponse, validateUsername, validatePassword, statusMessage } from '../utils'
@@ -32,9 +33,9 @@ export default async (req: RequestWithSession, res: Response) => {
     return sendJsonResponse(passwordValidityMessage, res)
   }
 
-
-  // login successful. Associate userid with session.
-  const newUser = await User.create({username: reqUsername, password: reqPassword});
+  const hashedPassword = await argon2.hash(reqPassword)
+  const newUser = await User.create({username: reqUsername, password: hashedPassword});
+  // registration successful. Associate userid with session.
   req.session.userId = newUser.id;
 
   return sendJsonResponse({error: false, message: "User successfully created."}, res)

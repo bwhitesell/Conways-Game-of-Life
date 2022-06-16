@@ -22,36 +22,34 @@ const Register: React.FC = () => {
     return await backendAPIClient.checkPasswordValidity(password)
   }
 
-  const onSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const attemptUserRegistration = async (fieldValues: string[]) => {
 
-    attemptUserRegistration();
+    const username = fieldValues[0];
+    const password = fieldValues[1]
 
-    async function attemptUserRegistration() {
-      const backendAPIClient = new BackendAPIClient(BACKEND_URL);
-      const registrationStatus = await backendAPIClient.registerUser(
-        inputFieldValues[0],
-        inputFieldValues[1],
-      );
+    const backendAPIClient = new BackendAPIClient(BACKEND_URL);
+    const registrationStatus = await backendAPIClient.registerUser(
+      username,
+      password,
+    );
 
-      if (registrationStatus.error) {
-        alert(registrationStatus.message)
-      } else {
-        signedInContext.update();
-        Router.push('/home')
-      }
+    if (registrationStatus.error) {
+      alert(registrationStatus.message)
+    } else {
+      signedInContext.update();
+      Router.push('/home')
     }
   }
 
   return (
     <ValidatedInputForm
       inputFieldNames={["Username", "Password"]}
-      inputFieldValues={inputFieldValues}
       fieldNameFontFamily="Apple Chancery, cursive"
       fieldNameFontSize="30px"
       formMaxWidth='500px'
       inputFieldValidations={[validateUsername, validatePassword]}
       submissionButtonName="Register"
-      onSubmit={(e: React.MouseEvent<HTMLButtonElement>) => onSubmit(e)}
+      onSubmit={attemptUserRegistration}
     />
   )
 }

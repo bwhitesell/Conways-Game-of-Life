@@ -29,7 +29,7 @@ export interface ValidatedInputState {
     typingDelay: number;
     hideValidityIcon?: boolean;
     validateInput: (input: string) => Promise<StatusMessage>;
-    setState?: React.Dispatch<React.SetStateAction<any>>
+    setState: React.Dispatch<React.SetStateAction<any>>
     isDisabled?: boolean;
     fontFamily?: string;
     fontSize?: string;
@@ -46,7 +46,6 @@ class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInput
     super(props);
 
     this.props = props;
-    this.state = this.props.state;
     this.validationCheck = setTimeout(() => {}, 0);
   }
 
@@ -60,23 +59,7 @@ class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInput
   }
 
   private setStateAndUpdateReference(state: ValidatedInputState) {
-    this.setState(state); // rerender this component
-
-    /**
-     * If passed a setter, want to use it and let some
-     * parent component know to rerender. If not however
-     * we want to just pass the data back via the state
-     * reference and only rerender this component.
-     */
-    if (this.props.setState) {
-      this.props.setState(state);
-    } else {
-      // update references to parent component(s) w/o a rerender.
-      this.props.state.value = state.value;
-      this.props.state.error = state.error;
-      this.props.state.message = state.message;
-      this.props.state.isPending = state.isPending;
-    }
+    this.props.setState(state);
   }
 
   private async checkValue(value: string) {
@@ -141,7 +124,7 @@ class ValidatedInput extends React.Component<ValidatedInputProps, ValidatedInput
             isDisabled={this.props.isDisabled ? this.props.isDisabled : false}
             id={this.props.name}
             type={this.props.name}
-            value={this.state.value}
+            value={this.props.state.value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {this.onChange(e)}}
           />
         </InputGroup>
