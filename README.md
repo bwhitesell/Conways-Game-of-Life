@@ -33,7 +33,7 @@ the board implemented in this app is of finite size.
 - App Flow
   - Redirects on entity manipulation when appropriate for ux.
   - Responsiveinput checking
-  - Alerts on submission errors.
+  - Alerts on user-related submission errors.
 
 
 ## Development installation
