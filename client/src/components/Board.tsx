@@ -1,13 +1,11 @@
-import { Box } from '@chakra-ui/react';
-import React from 'react';
-import GridCell  from '../components/GridCell'
-import ConwayGrid from '../conwayGrid';
-
+import { Box } from "@chakra-ui/react";
+import React from "react";
+import GridCell from "../components/GridCell";
+import ConwayGrid from "../conwayGrid";
 
 interface BoardProps {
-
   /**
-   * A configuration for the board. 
+   * A configuration for the board.
    */
   conwayGrid: ConwayGrid;
   onCellClick: (rowNum: number, colNum: number) => void;
@@ -39,30 +37,34 @@ class Board extends React.Component<BoardProps> {
     const grid = [];
 
     for (let rowNum = 0; rowNum < this.conwayGrid.nVerticalCells; rowNum++) {
-
       const renderedGridRow = [];
 
-      for (let colNum = 0; colNum < this.conwayGrid.nHorizontalCells; colNum ++) {
-
-        const cellIsAlive = this.conwayGrid.grid[rowNum][colNum]
+      for (
+        let colNum = 0;
+        colNum < this.conwayGrid.nHorizontalCells;
+        colNum++
+      ) {
+        const cellIsAlive = this.conwayGrid.grid[rowNum][colNum];
 
         renderedGridRow.push(
           <GridCell
-            key={`${rowNum}_${colNum}_${cellIsAlive})` }
+            key={`${rowNum}_${colNum}_${cellIsAlive})`}
             isSettingCell={this.conwayGrid.generation === 1}
             nNeighbors={this.conwayGrid.getNumNeighbors(rowNum, colNum)}
             alive={cellIsAlive}
             onClick={() => this.onCellClick(rowNum, colNum)}
-            isTree={((rowNum + colNum) % 2 === 0)}
+            isTree={(rowNum + colNum) % 2 === 0}
             isBorderCell={this.conwayGrid.isBorderCell(colNum, rowNum)}
           />
-        )
+        );
       }
       grid.push(
-        <Box key={rowNum} display="flex">{renderedGridRow}</Box>
+        <Box key={rowNum} display="flex">
+          {renderedGridRow}
+        </Box>
       );
     }
-    return grid
+    return grid;
   }
 
   render() {
@@ -70,8 +72,8 @@ class Board extends React.Component<BoardProps> {
       <Box display="block" margin="auto">
         {this.renderGrid()}
       </Box>
-    )
+    );
   }
 }
 
-export default Board
+export default Board;

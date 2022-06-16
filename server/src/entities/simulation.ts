@@ -1,9 +1,18 @@
-import sequelize from '../sequelizeClient'
-import { User, UserModel } from './user'
-import { DataTypes, Model, InferAttributes, InferCreationAttributes, ModelCtor } from 'sequelize'
+import sequelize from "../sequelizeClient";
+import { User, UserModel } from "./user";
+import {
+  DataTypes,
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  ModelCtor,
+} from "sequelize";
 
-
-export interface SimulationModel extends Model<InferAttributes<SimulationModel>, InferCreationAttributes<SimulationModel>> {
+export interface SimulationModel
+  extends Model<
+    InferAttributes<SimulationModel>,
+    InferCreationAttributes<SimulationModel>
+  > {
   id?: number;
   name: string;
   description: string;
@@ -11,11 +20,11 @@ export interface SimulationModel extends Model<InferAttributes<SimulationModel>,
   setUser: (user: UserModel) => void;
   getUser: () => Promise<UserModel>;
 }
-  
-const Simulation = sequelize.define<SimulationModel>('Simulation', {
+
+const Simulation = sequelize.define<SimulationModel>("Simulation", {
   name: DataTypes.STRING,
   description: DataTypes.STRING,
   data: DataTypes.STRING,
 });
 
-export { Simulation }
+export { Simulation };

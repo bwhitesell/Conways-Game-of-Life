@@ -1,10 +1,9 @@
-import { Heading } from '@chakra-ui/react';
-import Router from 'next/router';
-import React from 'react'
-import BackendAPIClient from '../backendAPIClient'
-import { BACKEND_URL } from '../config'
-import Loading from './Loading';
-
+import { Heading } from "@chakra-ui/react";
+import Router from "next/router";
+import React from "react";
+import BackendAPIClient from "../backendAPIClient";
+import { BACKEND_URL } from "../config";
+import Loading from "./Loading";
 
 export interface SignedInUserStatus {
   id: number;
@@ -14,26 +13,23 @@ export interface SignedInUserStatus {
 }
 
 export interface SignedInUserContext {
-  get: SignedInUserStatus,
+  get: SignedInUserStatus;
   update: () => void;
 }
-
 
 const signedInUserInitStatus: SignedInUserStatus = {
   id: -1,
   username: "anonymous",
   isLoading: true,
   isSignedIn: false,
-}
+};
 
 const SignedInContext = React.createContext<SignedInUserContext>({
   get: signedInUserInitStatus,
-  update: () => {}
+  update: () => {},
 });
 
-
-
-const SignedInProvider: React.FC<{children: JSX.Element}> = (props) => {
+const SignedInProvider: React.FC<{ children: JSX.Element }> = (props) => {
   const [userData, setUserData] = React.useState(signedInUserInitStatus);
   const backendAPIClient = new BackendAPIClient(BACKEND_URL);
 
@@ -54,57 +50,55 @@ const SignedInProvider: React.FC<{children: JSX.Element}> = (props) => {
           isSignedIn: false,
         });
       }
-    })
-  }
+    });
+  };
 
   React.useEffect(() => {
     updateUserData();
-  }, [])
+  }, []);
 
-  return (
-    userData.isLoading ? (
-      <Loading />
-    ) : (
-      <SignedInContext.Provider value={{get: userData, update: updateUserData}}>
-        {props.children}
-      </SignedInContext.Provider>
-    )
-  )
-}
+  return userData.isLoading ? (
+    <Loading />
+  ) : (
+    <SignedInContext.Provider value={{ get: userData, update: updateUserData }}>
+      {props.children}
+    </SignedInContext.Provider>
+  );
+};
 
-
-const SignedInComponent: React.FC<{children: JSX.Element}> = (props) => {
+const SignedInComponent: React.FC<{ children: JSX.Element }> = (props) => {
   return (
     <SignedInContext.Consumer>
-      { value => {
-          if (value.get.isSignedIn) {
-            return props.children
-          } else {
-            Router.push('/');
-            return Loading();
-          }
-      }
-    }
+      {(value) => {
+        if (value.get.isSignedIn) {
+          return props.children;
+        } else {
+          Router.push("/");
+          return Loading();
+        }
+      }}
     </SignedInContext.Consumer>
-  )
-}
+  );
+};
 
-
-const SignedOutComponent: React.FC<{children: JSX.Element}> = (props) => {
+const SignedOutComponent: React.FC<{ children: JSX.Element }> = (props) => {
   return (
     <SignedInContext.Consumer>
-      { value => {
-          if (!value.get.isSignedIn) {
-            return props.children
-          } else {
-            Router.push('/home');
-            return Loading();
-          }
-      }
-    }
+      {(value) => {
+        if (!value.get.isSignedIn) {
+          return props.children;
+        } else {
+          Router.push("/home");
+          return Loading();
+        }
+      }}
     </SignedInContext.Consumer>
-  )
-}
+  );
+};
 
-
-export { SignedInComponent, SignedOutComponent, SignedInProvider, SignedInContext }
+export {
+  SignedInComponent,
+  SignedOutComponent,
+  SignedInProvider,
+  SignedInContext,
+};

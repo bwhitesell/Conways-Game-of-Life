@@ -1,8 +1,10 @@
-import React from 'react';
-import CreateGame from '../components/CreateGame';
-import { Navbar } from '../components/Navbar';
-import { SignedInComponent, SignedOutComponent } from '../components/SignedInProvider';
-
+import React from "react";
+import CreateGame from "../components/CreateGame";
+import { Navbar } from "../components/Navbar";
+import {
+  SignedInComponent,
+  SignedOutComponent,
+} from "../components/SignedInProvider";
 
 const create: React.FC = () => {
   return (
@@ -12,7 +14,7 @@ const create: React.FC = () => {
         <CreateGame nHorizontalCells={30} nVerticalCells={17} />
       </div>
     </SignedInComponent>
-  )
-}
+  );
+};
 
-export default create 
+export default create;

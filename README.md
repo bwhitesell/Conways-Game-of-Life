@@ -1,6 +1,6 @@
 # Conway's Game of life
-A web application derived from Conway's game of life 🧱
-----
+
+## A web application derived from Conway's game of life 🧱
 
 Conway's game of life is a web application that lets you explore and share different simple
 starting states for the cellular automation known as conway's game of life. Project is
@@ -12,7 +12,9 @@ the board implemented in this app is of finite size.
 ## Implemented Features
 
 - Accounts
+
   - Session Management
+
     - Sign-in
     - Sign-out
     - Permissioned Data Access
@@ -21,11 +23,13 @@ the board implemented in this app is of finite size.
     - Create an account
 
 - Game configurations
+
   - Create / simulate / save a game configuration
   - Read / simulate an already built configuration
   - Delete an already build configuration
 
 - Music Player
+
   - Play/Pause functionality
   - Auto-play on dom interaction (chrome)
   - Continuous play through next.js redirects / page loads.
@@ -35,9 +39,9 @@ the board implemented in this app is of finite size.
   - Responsiveinput checking
   - Alerts on user-related submission errors.
 
-
 ## Development installation
-To run the application in a development context -- you'll need 
+
+To run the application in a development context -- you'll need
 <a href=https://docs.docker.com/compose/>docker compose</a> installed.
 
 After that -- things are pretty easy.
@@ -47,9 +51,11 @@ $ git clone https://github.com/bwhitesell/Conways-Game-of-Life
 $ cd Conways-Game-of-Life
 $ docker-compose up
 ```
+
 Two web servers should be spun up:
-  - A next.js server that hosts the client code on port 3000
-  - An express.js server on port 4000
+
+- A next.js server that hosts the client code on port 3000
+- An express.js server on port 4000
 
 Pop open a broswer and go to http://localhost:3000. I'd suggest sticking with chrome
 for now since the app tries to auto-play audio on page loads which most browsers
@@ -59,8 +65,8 @@ For the sake of development the dev db is auto-populated with mock data. You can
 with the user "m4ster_g4mer" and password "password" or you can register your own user
 of course.
 
-----
-
+---
 
 ## Deployment
+
 No deployments yet. Maybe one day.

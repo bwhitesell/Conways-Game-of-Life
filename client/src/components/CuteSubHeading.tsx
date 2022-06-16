@@ -1,7 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import { Heading } from '@chakra-ui/react';
-
+import { Heading } from "@chakra-ui/react";
 
 interface CuteSubHeadingProps {
   text: string;
@@ -17,7 +16,7 @@ const CuteSubHeading: React.FC<CuteSubHeadingProps> = (props) => {
     >
       {props.text}
     </Heading>
-  )
-}
+  );
+};
 
-export default CuteSubHeading
+export default CuteSubHeading;

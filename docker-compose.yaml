@@ -1,6 +1,5 @@
 version: "3.9"
 services:
-
   redis:
     image: redis:7.0.0-alpine
     ports:
@@ -33,4 +32,3 @@ services:
     volumes:
       - ./client/src:/home/node/client/src
       - ./client/public:/home/node/client/public
-

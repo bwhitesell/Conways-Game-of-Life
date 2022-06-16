@@ -1,45 +1,40 @@
-import { Box, Button, Heading, Skeleton, Stack } from '@chakra-ui/react';
-import React from 'react'
-import Router from 'next/router';
-import { SimulationCard } from '../components/SimulationCard'
-import { Navbar } from '../components/Navbar';
-import { SignedInComponent } from '../components/SignedInProvider'
-import BackendAPIClient, { SimulationData } from '../backendAPIClient';
-import { BACKEND_URL } from '../config'
-import { FlexCol, FlexRow } from '../components/Layout';
+import { Box, Button, Heading, Skeleton, Stack } from "@chakra-ui/react";
+import React from "react";
+import Router from "next/router";
+import { SimulationCard } from "../components/SimulationCard";
+import { Navbar } from "../components/Navbar";
+import { SignedInComponent } from "../components/SignedInProvider";
+import BackendAPIClient, { SimulationData } from "../backendAPIClient";
+import { BACKEND_URL } from "../config";
+import { FlexCol, FlexRow } from "../components/Layout";
 
-interface HomeProps {
-
-}
+interface HomeProps {}
 
 interface HomeState {
   loading: boolean;
   simulations: undefined | SimulationData[];
-
 }
 
-
 class Home extends React.Component<HomeProps, HomeState> {
-
   constructor(props: {}) {
     super(props);
     this.state = {
       loading: true,
       simulations: undefined,
-    }
+    };
   }
 
   async componentDidMount() {
     const simulations = await this.requestSimulationData();
     this.setState({
       loading: false,
-      simulations: simulations
-    })
+      simulations: simulations,
+    });
   }
 
   private renderSimulationsList(): JSX.Element[] | undefined {
     const simulationData = this.state.simulations;
-    if (simulationData){
+    if (simulationData) {
       const simulations = [];
       for (let i = 0; i < simulationData.length; i++) {
         simulations.push(
@@ -52,14 +47,14 @@ class Home extends React.Component<HomeProps, HomeState> {
           />
         );
       }
-      return simulations
-    } 
-    return undefined
+      return simulations;
+    }
+    return undefined;
   }
 
   private renderNoSimsHeading(): JSX.Element {
     return (
-      <Heading 
+      <Heading
         size="lg"
         color="#546960"
         textAlign="center"
@@ -68,19 +63,19 @@ class Home extends React.Component<HomeProps, HomeState> {
         borderRadius={10}
         margin={5}
       >
-      No simulations created yet...
-      </Heading> 
-    )
+        No simulations created yet...
+      </Heading>
+    );
   }
 
   private genRemoveSimFromStateCB(simulationIdx: number) {
     return () => {
-      if (this.state.simulations){
+      if (this.state.simulations) {
         const newSimulations = [...this.state.simulations];
-        newSimulations.splice(simulationIdx, 1);  // drop the ith idx
-        this.setState({simulations: newSimulations})
+        newSimulations.splice(simulationIdx, 1); // drop the ith idx
+        this.setState({ simulations: newSimulations });
       }
-    }
+    };
   }
 
   private async requestSimulationData(): Promise<SimulationData[]> {
@@ -88,81 +83,75 @@ class Home extends React.Component<HomeProps, HomeState> {
     const simulations = await backendAPIClient.listSimulations();
     if ("error" in simulations) {
       console.log(`error retrieving simulation data: ${simulations.message}`);
-      return []
+      return [];
     } else {
-      return simulations
+      return simulations;
     }
   }
 
   private simSkeleton() {
     return (
       <Stack margin={5}>
-        <Skeleton height='20px' />
-        <Skeleton height='20px' />
-        <Skeleton height='20px' />
+        <Skeleton height="20px" />
+        <Skeleton height="20px" />
+        <Skeleton height="20px" />
       </Stack>
-    )
+    );
   }
 
   render() {
     return (
       <SignedInComponent>
         <FlexCol>
-            <Navbar />
-            <FlexCol
-              marginTop={20}
-              marginBottom={20}
-              borderRadius={8}
-              backgroundColor="#f2f2f2"
-            >
-              <FlexRow p={5}>
-                <Box display="flex" justifyContent="center" flexDirection="column">
-                  <FlexCol>
-                    <Heading
-                      display="flex"
-                      margin="auto"
-                      color="teal"
-                      size="4xl"
-                      fontFamily="Apple Chancery, cursive"
-                    >
-                      My Games
-                    </Heading>
-                    <Button
-                      color="teal"
-                      backgroundColor="#d1d1d1"
-                      borderRadius={5}
-                      margin={10}
-                      p={5}
-                      fontSize={20}
-                      fontFamily="Apple Chancery, cursive"
-                      onClick={() => Router.push("create")}
-                    >
-                      New Game + 
-                    </Button>
-                  </FlexCol>
-                  { this.state.loading ? (
-                      this.simSkeleton()
-                    ) : (
-                      (this.state.simulations!.length > 0) ? (
-                        this.renderSimulationsList()
-                      ) : (
-                        this.renderNoSimsHeading()
-                      )
-                    )
-                  }
-                </Box>
-              </FlexRow>
-              <Box display="flex" justifyContent="center" />
-            </FlexCol>
+          <Navbar />
+          <FlexCol
+            marginTop={20}
+            marginBottom={20}
+            borderRadius={8}
+            backgroundColor="#f2f2f2"
+          >
+            <FlexRow p={5}>
+              <Box
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+              >
+                <FlexCol>
+                  <Heading
+                    display="flex"
+                    margin="auto"
+                    color="teal"
+                    size="4xl"
+                    fontFamily="Apple Chancery, cursive"
+                  >
+                    My Games
+                  </Heading>
+                  <Button
+                    color="teal"
+                    backgroundColor="#d1d1d1"
+                    borderRadius={5}
+                    margin={10}
+                    p={5}
+                    fontSize={20}
+                    fontFamily="Apple Chancery, cursive"
+                    onClick={() => Router.push("create")}
+                  >
+                    New Game +
+                  </Button>
+                </FlexCol>
+                {this.state.loading
+                  ? this.simSkeleton()
+                  : this.state.simulations!.length > 0
+                  ? this.renderSimulationsList()
+                  : this.renderNoSimsHeading()}
+              </Box>
+            </FlexRow>
+            <Box display="flex" justifyContent="center" />
+          </FlexCol>
         </FlexCol>
       </SignedInComponent>
-    )
+    );
   }
 }
 
-  
-export default Home
-
-
-
- 
+export default Home;

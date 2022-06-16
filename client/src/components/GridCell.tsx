@@ -1,6 +1,5 @@
-import { Box, Button } from '@chakra-ui/react';
-import React from 'react';
-
+import { Box, Button } from "@chakra-ui/react";
+import React from "react";
 
 interface GridCellProps {
   alive: boolean;
@@ -11,11 +10,9 @@ interface GridCellProps {
   onClick: () => void;
 }
 
-
 interface GridCellState {
   opacity: number;
 }
-
 
 class GridCell extends React.Component<GridCellProps, GridCellState> {
   alive: boolean;
@@ -24,9 +21,9 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
   nNeighbors: number;
   onClick: () => void;
 
-  cellSize: number
+  cellSize: number;
   isTree: boolean;
-  animation: () => void
+  animation: () => void;
 
   constructor(props: GridCellProps) {
     super(props);
@@ -37,91 +34,89 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
     this.isSettingCell = props.isSettingCell;
 
     this.isTree = props.isTree;
-    this.animation = this.alive ? this.animateBirth : this.animateDeath
+    this.animation = this.alive ? this.animateBirth : this.animateDeath;
     this.cellSize = 32;
 
     this.state = {
-      opacity: this.isSettingCell ? 0.0 : (this.alive ? 0.0 : 1.0)
-    }
+      opacity: this.isSettingCell ? 0.0 : this.alive ? 0.0 : 1.0,
+    };
   }
 
   componentDidMount() {
-    this.animation()
+    this.animation();
   }
 
   private buttonId() {
     if (this.alive) {
       if (this.isTree) {
-        return "aliveTreeCell"
+        return "aliveTreeCell";
       } else {
-        return "aliveFlowerCell"
+        return "aliveFlowerCell";
       }
     } else {
       if (this.isTree) {
-        return "deadTreeCell"
+        return "deadTreeCell";
       } else {
-        return "deadFlowerCell"
+        return "deadFlowerCell";
       }
     }
   }
 
   private backgroundColor() {
     if (this.isSettingCell) {
-      return `rgba(217, 255, 227, ${this.state.opacity})`
+      return `rgba(217, 255, 227, ${this.state.opacity})`;
     }
 
     if (!this.isBorderCell) {
       if (this.nNeighbors === 0) {
-        return `rgba(255, 247, 251, ${this.state.opacity})`
+        return `rgba(255, 247, 251, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 1) {
-        return `rgba(217, 255, 227, ${this.state.opacity})`
+        return `rgba(217, 255, 227, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 2) {
-        return `rgba(219, 255, 217, ${this.state.opacity})`
+        return `rgba(219, 255, 217, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 3) {
-        return `rgba(237, 255, 217, ${this.state.opacity})`
+        return `rgba(237, 255, 217, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 4) {
-        return `rgba(249, 255, 201, ${this.state.opacity})`
+        return `rgba(249, 255, 201, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 5) {
-        return `rgba(255, 242, 201, ${this.state.opacity})`
+        return `rgba(255, 242, 201, ${this.state.opacity})`;
       }
       if (this.nNeighbors === 6) {
-        return `rgba(255, 231, 201, ${this.state.opacity})`
+        return `rgba(255, 231, 201, ${this.state.opacity})`;
       }
       if (this.nNeighbors >= 7) {
-        return `rgba(255, 215, 201, ${this.state.opacity})`
+        return `rgba(255, 215, 201, ${this.state.opacity})`;
       }
     } else {
-      return `rgba(255, 239, 214, ${this.state.opacity})`
+      return `rgba(255, 239, 214, ${this.state.opacity})`;
     }
-    return "white"
+    return "white";
   }
-    
+
   private async animateBirth() {
-    for (let i = 1; i < 10; i+=1) {
-      await new Promise(resolve => setTimeout(
-        () => {
-          this.setState({opacity: this.state.opacity + i*.1});
-          resolve('');
-        },
-        40,
-      ));
+    for (let i = 1; i < 10; i += 1) {
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          this.setState({ opacity: this.state.opacity + i * 0.1 });
+          resolve("");
+        }, 40)
+      );
     }
   }
 
   private async animateDeath() {
-    for (let i = 1; i < 100; i+=10) {
-      await new Promise(resolve => setTimeout(
-        () => {
-          this.setState({opacity: this.state.opacity - i*.01});
-          resolve('');
-        },
-        50,
-      ));
+    for (let i = 1; i < 100; i += 10) {
+      await new Promise((resolve) =>
+        setTimeout(() => {
+          this.setState({ opacity: this.state.opacity - i * 0.01 });
+          resolve("");
+        }, 50)
+      );
     }
   }
 
@@ -136,12 +131,10 @@ class GridCell extends React.Component<GridCellProps, GridCellState> {
           flex={1}
           p={0}
           onClick={(e: React.MouseEvent) => this.onClick()}
-        >
-        </Button>
+        ></Button>
       </Box>
-    )
+    );
   }
 }
 
-
-export default GridCell
+export default GridCell;

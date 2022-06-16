@@ -1,16 +1,14 @@
-import { RequestWithSession } from '../index'
-import { associateSessionWithUser, sendJsonResponse } from '../utils'
-import { Simulation } from '../../entities/simulation'
+import { RequestWithSession } from "../index";
+import { associateSessionWithUser, sendJsonResponse } from "../utils";
+import { Simulation } from "../../entities/simulation";
 
-import { Response } from 'express'
-
+import { Response } from "express";
 
 const createSimulation = async (req: RequestWithSession, res: Response) => {
-
   const sessionUser = await associateSessionWithUser(req.session);
 
   const reqBody = req.body;
-  const reqBodyFields = Object.keys(reqBody)
+  const reqBodyFields = Object.keys(reqBody);
 
   // validate request body structure
   if (
@@ -19,7 +17,7 @@ const createSimulation = async (req: RequestWithSession, res: Response) => {
     !reqBodyFields.includes("data")
   ) {
     res.status(400);
-    sendJsonResponse({error: true, message: "malformed body request."}, res)
+    sendJsonResponse({ error: true, message: "malformed body request." }, res);
   }
 
   if (sessionUser) {
@@ -27,10 +25,13 @@ const createSimulation = async (req: RequestWithSession, res: Response) => {
     console.log(reqBody.data);
     const simulation = await Simulation.create(reqBody);
     simulation.setUser(sessionUser);
-    sendJsonResponse({error: false, message: "simulation successfully created"}, res);
+    sendJsonResponse(
+      { error: false, message: "simulation successfully created" },
+      res
+    );
   } else {
-    sendJsonResponse({error: true, message: "not signed in."}, res)
+    sendJsonResponse({ error: true, message: "not signed in." }, res);
   }
-}
+};
 
-export default createSimulation
+export default createSimulation;

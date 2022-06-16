@@ -1,8 +1,8 @@
 :root {
   --pixel-size: 0.5vw;
-  --grid-cell: calc( var(--pixel-size) * 34);
+  --grid-cell: calc(var(--pixel-size) * 34);
   --board-pixel-size: 1px;
-  --board-grid-cell: calc( var(--board-pixel-size) * 37);
+  --board-grid-cell: calc(var(--board-pixel-size) * 37);
   --bg: #9fa7e4;
 }
 
@@ -12,9 +12,9 @@
   background-image: url("/growth2.png");
   background-position: calc(var(--board-grid-cell) * 36) calc(0px);
   background-size: 100%;
-  width: calc( var(--board-grid-cell) * 37);
-  height: calc( var(--board-grid-cell));
-  animation: boardGrowAnimation .38s steps(35) 1 forwards;
+  width: calc(var(--board-grid-cell) * 37);
+  height: calc(var(--board-grid-cell));
+  animation: boardGrowAnimation 0.38s steps(35) 1 forwards;
   overflow: hidden;
 }
 
@@ -23,9 +23,9 @@
   margin: auto;
   background-image: url("/growth2.png");
   background-size: 100%;
-  width: calc( var(--board-grid-cell) * 37);
-  height: calc( var(--board-grid-cell));
-  animation: boardDieAnimation .38s steps(35) 1 forwards;
+  width: calc(var(--board-grid-cell) * 37);
+  height: calc(var(--board-grid-cell));
+  animation: boardDieAnimation 0.38s steps(35) 1 forwards;
   overflow: hidden;
 }
 
@@ -35,9 +35,9 @@
   background-image: url("/flower-growth.png");
   background-position: calc(var(--board-grid-cell) * 36) calc(0px);
   background-size: 100%;
-  width: calc( var(--board-grid-cell) * 37);
-  height: calc( var(--board-grid-cell));
-  animation: boardGrowAnimation .38s steps(35) 1 forwards;
+  width: calc(var(--board-grid-cell) * 37);
+  height: calc(var(--board-grid-cell));
+  animation: boardGrowAnimation 0.38s steps(35) 1 forwards;
   overflow: hidden;
 }
 
@@ -46,9 +46,9 @@
   margin: auto;
   background-image: url("/flower-growth.png");
   background-size: 100%;
-  width: calc( var(--board-grid-cell) * 37);
-  height: calc( var(--board-grid-cell));
-  animation: boardDieAnimation .38s steps(35) 1 forwards;
+  width: calc(var(--board-grid-cell) * 37);
+  height: calc(var(--board-grid-cell));
+  animation: boardDieAnimation 0.38s steps(35) 1 forwards;
   overflow: hidden;
 }
 
@@ -57,46 +57,53 @@
   margin: auto;
   background-image: url("/growth.png");
   background-size: 100%;
-  width: calc( var(--grid-cell) * 34);
-  height: calc( var(--grid-cell));
+  width: calc(var(--grid-cell) * 34);
+  height: calc(var(--grid-cell));
   animation: frontPageGrowAnimation 3.5s steps(33) 1 forwards;
   animation-delay: 1s;
 }
 
 #cellHero {
   margin: auto;
-  width: calc( var(--board-grid-cell));
-  height: calc( var(--board-grid-cell));
+  width: calc(var(--board-grid-cell));
+  height: calc(var(--board-grid-cell));
   overflow: hidden;
   background: none;
 }
 
 #hero {
   margin: auto;
-  width: calc( var(--grid-cell));
-  height: calc( var(--grid-cell));
+  width: calc(var(--grid-cell));
+  height: calc(var(--grid-cell));
   overflow: hidden;
 }
 
 @keyframes boardGrowAnimation {
-  
-  from { 
+  from {
     background-position: calc(var(--board-grid-cell) * 1) calc(0px);
   }
 
-  to { 
+  to {
     background-position: calc(var(--board-grid-cell) * 36) calc(0px);
   }
 }
 
 @keyframes boardDieAnimation {
-  from { background-position: calc(var(--board-grid-cell) * 36) calc(0px); }
-  to { background-position: calc(var(--board-grid-cell) * 1) calc(0px);; }
+  from {
+    background-position: calc(var(--board-grid-cell) * 36) calc(0px);
+  }
+  to {
+    background-position: calc(var(--board-grid-cell) * 1) calc(0px);
+  }
 }
 
-@keyframes frontPageGrowAnimation{
-  from { background-position: 0px 0px; }
-  to { background-position: calc(var(--grid-cell) * -33) calc(0px); }
+@keyframes frontPageGrowAnimation {
+  from {
+    background-position: 0px 0px;
+  }
+  to {
+    background-position: calc(var(--grid-cell) * -33) calc(0px);
+  }
 }
 
 .simCard {
